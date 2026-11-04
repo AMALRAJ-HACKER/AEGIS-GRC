@@ -4,32 +4,38 @@
 
 ### Where Compliance Meets Intelligence
 
-Enterprise Governance, Risk & Compliance Platform powered by AI
+Enterprise Governance, Risk & Compliance Platform Powered by AI
 
-[![React Native](https://img.shields.io/badge/React%20Native-Expo-blue.svg)]()
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)]()
-[![Supabase](https://img.shields.io/badge/Supabase-Backend-green.svg)]()
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)]()
+![React Native](https://img.shields.io/badge/React%20Native-Expo-61DAFB?style=for-the-badge&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+
+A modern, AI-powered Governance, Risk, Compliance, Audit, and Security Management platform designed for organizations of all sizes.
 
 </div>
 
 ---
 
-## 🚀 Overview
+## 📋 Overview
 
-AEGIS GRC is a modern Governance, Risk, and Compliance (GRC) platform designed to help organizations manage compliance frameworks, cybersecurity risks, evidence, audits, remediation activities, and AI-driven compliance workflows from a single unified platform.
+AEGIS GRC is a comprehensive Governance, Risk, and Compliance platform that enables organizations to manage compliance frameworks, risk assessments, audits, evidence, remediation activities, and AI-assisted compliance operations from a unified platform.
 
 Built for:
 
 - Chief Information Security Officers (CISOs)
-- Compliance Teams
 - GRC Analysts
-- IT & Security Teams
+- Compliance Officers
 - Auditors
-- Risk Owners
-- Enterprise Leadership
+- IT Administrators
+- Security Teams
+- Risk Managers
+- Executive Leadership
+- Enterprise Staff
 
-The platform combines compliance automation, risk intelligence, audit management, and AI-powered recommendations into a clean enterprise SaaS experience inspired by modern platforms such as Vanta, Comp AI, Drata, and Secureframe.
+AEGIS GRC combines compliance automation, risk intelligence, audit readiness, and AI-powered guidance into a modern enterprise SaaS experience inspired by industry-leading compliance platforms.
 
 ---
 
@@ -37,165 +43,264 @@ The platform combines compliance automation, risk intelligence, audit management
 
 ## 📊 Executive Dashboard
 
-- Compliance Health Overview
-- Framework Readiness Tracking
-- Risk Monitoring
-- Task Management
-- Audit Readiness Indicators
+Gain complete visibility into your organization's compliance and security posture.
+
+### Features
+
+- Overall Compliance Score
+- Framework Compliance Overview
+- Risk Monitoring Dashboard
+- Audit Readiness Tracking
 - Evidence Coverage Metrics
-- Real-time Compliance Insights
-- AI Recommendations
+- Task Management Insights
+- Upcoming Compliance Deadlines
+- AI-Powered Recommendations
+- Organizational KPIs
+- Security Activity Monitoring
 
 ---
 
 ## 🏛 Compliance Management
 
-Supported Frameworks:
+Manage compliance programs across multiple standards and regulations.
+
+### Supported Frameworks
 
 - ISO/IEC 27001:2022
 - SOC 2
-- NIST Cybersecurity Framework
-- DPDP Act 2023
+- NIST Cybersecurity Framework (CSF)
+- Digital Personal Data Protection Act (DPDP Act 2023)
 - CERT-In Directions
 - RBI Cybersecurity Guidelines
-- UGC Security Guidelines
+- UGC Information Technology Guidelines
 
-### Capabilities
+### Compliance Capabilities
 
 - Framework Catalog
 - Control Library
 - Gap Analysis
-- Assessment Workflows
+- Compliance Assessments
 - Evidence Mapping
 - Remediation Tracking
-- Progress Monitoring
+- Policy Management
+- Control Ownership
+- Review Workflows
+- Compliance Reporting
+
+### Control Statuses
+
+- Not Started
+- In Progress
+- Implemented
+- Needs Review
+- Non-Compliant
 
 ---
 
 ## ⚠️ Risk Management
 
-### Risk Register
+Create, assess, track, and remediate organizational risks.
 
-- Create Risks
-- Risk Reviews
-- Risk Ownership
-- Risk Treatment Plans
+### Features
+
+- Enterprise Risk Register
+- Risk Assessment Workflows
+- Risk Heat Maps
+- Risk Treatment Planning
 - Residual Risk Tracking
-- Control Linkage
+- Risk Ownership Management
 - Asset Mapping
+- Control Mapping
+- Risk Reviews
+- Risk Change History
 
-### Risk Treatment
-
-- Mitigate
-- Transfer
-- Accept
-- Avoid
-
-### Severity Levels
+### Risk Severity Levels
 
 - Critical
 - High
 - Medium
 - Low
 
+### Risk Treatment Methods
+
+- Mitigate
+- Accept
+- Transfer
+- Avoid
+
 ---
 
 ## 📁 Evidence Management
 
-Securely store and manage compliance evidence.
+Securely collect, manage, and review compliance evidence.
 
-Features:
+### Features
 
-- File Uploads
-- Evidence Reviews
+- Secure File Uploads
+- Evidence Categorization
 - Approval Workflows
-- Expiry Tracking
-- Version Management
-- Secure Cloud Storage
+- Version Control
+- Evidence Expiry Tracking
 - Control Associations
+- Framework Mapping
+- Review History
+- Audit Support
+- File Preview Support
+
+### Supported Evidence Sources
+
+- Documents
+- Screenshots
+- Policies
+- Reports
+- Audit Artifacts
+- Compliance Records
+- System Evidence
 
 ---
 
-## ✅ Task Management
+## ✅ Task & Remediation Management
 
-Track and manage remediation activities.
+Track compliance and risk actions from assignment to completion.
 
-Features:
+### Features
 
+- Task Creation
 - Task Assignment
-- Priorities
-- Due Dates
-- Comments
+- Priority Management
+- Due Date Tracking
+- Task Comments
 - Activity History
-- Status Tracking
 - Notifications
+- Progress Tracking
+- Team Collaboration
+
+### Task Statuses
+
+- Open
+- In Progress
+- Completed
+- Blocked
+- Overdue
 
 ---
 
 ## 📝 Audit Management
 
-Complete audit lifecycle management.
+Manage the complete audit lifecycle.
 
-Features:
+### Features
 
 - Audit Planning
-- Audit Checklists
-- Findings Management
+- Scope Definition
+- Audit Scheduling
+- Auditor Assignment
 - Evidence Requests
-- Corrective Actions
+- Audit Checklists
+- Findings Tracking
+- Corrective Action Plans
+- Audit Progress Monitoring
 - Audit Reporting
-- Audit History
+
+### Finding Severity Levels
+
+- Critical
+- Major
+- Minor
+- Observation
+
+---
+
+## 📈 Reports & Analytics
+
+Generate actionable compliance and security insights.
+
+### Report Types
+
+- Compliance Posture Report
+- Framework Compliance Report
+- Risk Register Report
+- Audit Findings Report
+- Evidence Coverage Report
+- Remediation Progress Report
+- Task Performance Report
+- Executive Summary Report
+
+### Export Formats
+
+- PDF
+- CSV
+- Excel
 
 ---
 
 ## 🤖 AI Compliance Assistant
 
-AEGIS AI Assistant helps users:
+The AEGIS AI Assistant helps compliance teams accelerate governance and compliance activities.
+
+### AI Capabilities
 
 - Explain Security Controls
 - Identify Compliance Gaps
 - Generate Remediation Plans
-- Draft Policies
+- Draft Policies and Procedures
 - Summarize Evidence
 - Prepare Audit Checklists
-- Recommend Compliance Actions
+- Recommend Corrective Actions
+- Answer Compliance Questions
+- Support Audit Readiness Activities
 
-Example:
+### Example Prompts
 
 ```text
 What are our top compliance gaps?
 
-Create a remediation plan for critical risks.
-
 Generate an ISO 27001 audit readiness checklist.
 
-Summarize evidence missing for SOC 2 controls.
+Create a remediation plan for critical risks.
+
+Summarize overdue compliance tasks.
+
+Recommend controls for privileged access management.
+
+Identify missing evidence for SOC 2 compliance.
 ```
+
+### AI Security Principles
+
+- Secure Backend Processing
+- Organization-Aware Access Control
+- Role-Based Authorization
+- No Client-Side API Keys
+- Source Attribution
+- Human Review Required
 
 ---
 
 # 🏗 Architecture
 
 ```text
-┌─────────────────────┐
-│   React Native App  │
-└─────────┬───────────┘
-          │
-          ▼
-┌─────────────────────┐
-│      Supabase       │
-├─────────────────────┤
-│ Authentication      │
-│ PostgreSQL Database │
-│ Storage             │
-│ Edge Functions      │
-│ Row Level Security  │
-└─────────┬───────────┘
-          │
-          ▼
-┌─────────────────────┐
-│ AI Services Layer   │
-└─────────────────────┘
+┌─────────────────────────────┐
+│      React Native App       │
+│    Expo + TypeScript        │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│          Supabase           │
+├─────────────────────────────┤
+│ Authentication              │
+│ PostgreSQL Database         │
+│ Row Level Security (RLS)    │
+│ Storage Buckets             │
+│ Edge Functions              │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│      AI Service Layer       │
+│    Compliance Intelligence  │
+└─────────────────────────────┘
 ```
 
 ---
@@ -212,47 +317,56 @@ Summarize evidence missing for SOC 2 controls.
 ## Design Principles
 
 - Enterprise First
+- Security Focused
 - Mobile First
-- Accessibility Focused
-- Light Theme by Default
-- Modern SaaS Experience
+- Accessibility Driven
+- Simple and Modern
 - Clean Information Hierarchy
+- Light Theme by Default
 
 ---
 
 ## Color Palette
 
-### Primary
+### Primary Colors
 
-| Color | Hex |
-|---------|---------|
+| Name | Hex |
+|--------|--------|
 | Navy Blue | #0F172A |
-| Blue | #2563EB |
+| Primary Blue | #2563EB |
 | Light Blue | #DBEAFE |
-
----
 
 ### Status Colors
 
-| Status | Color |
-|----------|----------|
+| State | Color |
+|---------|---------|
 | Success | #14B86E |
 | Warning | #F59E0B |
 | Critical | #EF4444 |
-| Info | #3B82F6 |
+| Information | #3B82F6 |
+
+### Neutral Colors
+
+| Name | Hex |
+|--------|--------|
+| Background | #F8FAFC |
+| Surface | #FFFFFF |
+| Border | #E5E7EB |
+| Primary Text | #0F172A |
+| Secondary Text | #64748B |
 
 ---
 
 # 🛠 Technology Stack
 
-## Mobile
+## Frontend
 
 - React Native
 - Expo
 - TypeScript
 - Expo Router
 
-## Data Layer
+## State Management
 
 - TanStack Query
 - React Hook Form
@@ -268,9 +382,10 @@ Summarize evidence missing for SOC 2 controls.
 ## Security
 
 - JWT Authentication
+- Role-Based Access Control
 - Row Level Security (RLS)
-- Secure Session Storage
 - Tenant Isolation
+- Secure Session Storage
 
 ---
 
@@ -287,10 +402,10 @@ Dashboard
 │   └── Evidence
 │
 ├── Risks
-│   ├── Register
-│   ├── Treatment
-│   ├── Library
-│   └── Reviews
+│   ├── Risk Register
+│   ├── Risk Treatment
+│   ├── Risk Reviews
+│   └── Risk Library
 │
 ├── Tasks
 │
@@ -298,9 +413,11 @@ Dashboard
 │
 ├── Reports
 │
+├── Notifications
+│
 ├── Team
 │
-├── Notifications
+├── Settings
 │
 └── AI Assistant
 ```
@@ -309,55 +426,55 @@ Dashboard
 
 # 🔐 User Roles
 
-| Role | Access |
-|--------|---------|
-| Super Admin | Full Platform Access |
+| Role | Responsibilities |
+|--------|--------|
+| Super Admin | Full Platform Administration |
 | Organization Admin | Organization Management |
 | GRC Analyst | Compliance Operations |
-| IT/Security Team | Security Controls |
-| Auditor | Audit Activities |
-| Management | Executive Dashboards |
-| Staff | Assigned Activities |
+| IT/Security Team | Security Controls and Remediation |
+| Auditor | Audit Activities and Reporting |
+| Management | Executive Reporting and Visibility |
+| Staff | Assigned Tasks and Evidence Submission |
 
 ---
 
 # 🗄 Database Modules
 
-### Core
+## Core Tables
 
 - profiles
 - organizations
-- memberships
+- organization_memberships
 - roles
 - permissions
 
-### Compliance
+## Compliance
 
 - frameworks
 - framework_controls
 - assessments
 
-### Risk
+## Risk Management
 
 - risks
 - risk_treatments
 
-### Evidence
+## Evidence Management
 
 - evidence
 - evidence_versions
 
-### Tasks
+## Task Management
 
 - tasks
 - task_comments
 
-### Audits
+## Audit Management
 
 - audits
 - audit_findings
 
-### Platform
+## Platform Services
 
 - notifications
 - activity_logs
@@ -365,9 +482,9 @@ Dashboard
 
 ---
 
-# ⚙️ Environment Setup
+# ⚙️ Environment Variables
 
-Create a `.env` file:
+Create a `.env` file in the project root.
 
 ```env
 EXPO_PUBLIC_SUPABASE_URL=
@@ -377,88 +494,118 @@ AI_PROVIDER=
 AI_API_URL=
 
 APP_ENV=development
+
+**Never commit production secrets or API keys to source control.**
 ```
 
 ---
 
 # 🚀 Getting Started
 
-### Install Dependencies
+## Install Dependencies
 
 ```bash
 npm install
 ```
 
-### Start Expo
+## Start the Development Server
 
 ```bash
 npx expo start
 ```
 
-### Android
+## Run on Android
 
 ```bash
 npx expo run:android
 ```
 
-### iOS
+## Run on iOS
 
 ```bash
 npx expo run:ios
 ```
 
----
-
-# 🧪 Testing
-
-Run Tests
-
-```bash
-npm test
-```
-
-Run Lint
+## Run Linting
 
 ```bash
 npm run lint
 ```
 
-Type Check
+## Run Type Checking
 
 ```bash
 npm run type-check
 ```
 
+## Run Tests
+
+```bash
+npm run test
+```
+
 ---
 
-# 🔒 Security
+# 🧪 Testing Strategy
 
-AEGIS GRC follows security-by-design principles.
+### Unit Tests
 
-### Security Features
+- Risk Scoring Logic
+- Compliance Calculations
+- Permission Validation
+- Utility Functions
 
-- Role-Based Access Control
+### Integration Tests
+
+- Authentication
+- Authorization
+- Database Operations
+- API Workflows
+
+### End-to-End Tests
+
+- User Registration
+- Organization Audit Lifecycle
+
+---
+
+# 🔒 Security Principles
+
+AEGIS GRC follows a security-by-design approach.
+
+### Security Controls
+
 - Multi-Tenant Isolation
+- Row Level Security (RLS)
+- Role-Based Access Control (RBAC)
 - Secure File Storage
-- Row-Level Security
-- Activity Logging
-- Audit Trails
-- Secure API Architecture
-- Environment-Based Secrets
+- Audit Logging
+- Activity Tracking
+- Encrypted Communications
+- Secure Session Management
+- Backend Authorization Enforcement
+
+### Security Guidelines
+
+- Never expose service-role keys to the client.
+- Never trust client-supplied role claims.
+- Validate authorization on every backend operation.
+- Store sensitive files in private storage buckets.
+- Log security events without exposing confidential information.
 
 ---
 
-# 📈 Roadmap
+# 🗺 Roadmap
 
 ### Phase 1
 
 - Authentication
+- Organization Management
 - Dashboard
-- Organizations
 
 ### Phase 2
 
-- Framework Management
+- Compliance Frameworks
 - Controls
 - Evidence
 
@@ -469,22 +616,31 @@ AEGIS GRC follows security-by-design principles.
 
 ### Phase 4
 
-- Audit Management
+- Audits
 - Reports
+- Notifications
 
 ### Phase 5
 
 - AI Compliance Assistant
 - Advanced Analytics
-- Integrations
+- Enterprise Integrations
 
 ---
 
-# ⚠ Disclaimer
+# ⚠️ Compliance Disclaimer
 
-AEGIS GRC assists organizations in managing governance, risk, compliance, and audit activities. The platform does not guarantee regulatory compliance, legal conformity, certification, audit success, or official approval.
+AEGIS GRC assists organizations in managing governance, risk, compliance, audit, and security activities.
 
-Organizations remain responsible for validating controls, evidence, policies, risk treatments, and compliance outcomes.
+The platform does not guarantee compliance, certification, regulatory approval, legal advice, audit success, or official accreditation.
+
+Organizations remain responsible for validating controls, policies, evidence, risk decisions, compliance outcomes, and regulatory obligations.
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
 
 ---
 
@@ -492,6 +648,10 @@ Organizations remain responsible for validating controls, evidence, policies, ri
 
 ## 🛡️ AEGIS GRC
 
-### Where Compliance ce Teams
+### Where Compliance Meets Intelligence
+
+Modern Governance • Risk Management • Compliance • Audit Readiness • AI-Powered Operations
+
+Built for Security Teams, Compliance Professionals, and Enterprise Organizations.
 
 </div>
