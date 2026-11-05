@@ -38,3 +38,5 @@ Thumbs.db
 # Misc
 coverage/
 .turbo/
+selenium-tests/bin/
+selenium-tests/reports/screenshots/

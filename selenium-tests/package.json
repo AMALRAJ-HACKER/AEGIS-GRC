@@ -1,0 +1,16 @@
+{
+  "name": "aegis-grc-selenium-e2e",
+  "version": "1.0.0",
+  "description": "AEGIS GRC End-to-End Selenium Testing Suite with Excel Analysis Reporter",
+  "main": "runner.js",
+  "scripts": {
+    "test": "node runner.js",
+    "test:headed": "HEADLESS=false node runner.js",
+    "test:chrome": "BROWSER=chrome node runner.js",
+    "test:firefox": "BROWSER=firefox node runner.js"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "selenium-webdriver": "^4.27.0"
+  }
+}

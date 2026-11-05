@@ -1,0 +1,73 @@
+name: AEGIS GRC - Selenium End-to-End & Excel Report
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Target Application URL (leave blank to start local server)'
+        required: false
+        default: ''
+      browser:
+        description: 'Browser for testing'
+        required: true
+        default: 'firefox'
+        type: choice
+        options:
+          - firefox
+          - chrome
+
+permissions:
+  contents: read
+
+jobs:
+  selenium-e2e-test:
+    name: Run Selenium E2E & Generate Excel Report
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: 1. Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 2. Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 3. Install Root Dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: 4. Install Selenium Test Dependencies
+        run: |
+          cd selenium-tests
+          npm ci || npm install
+
+      - name: 5. Execute Selenium E2E Test Suite
+        env:
+          BASE_URL: ${{ inputs.base_url || 'http://127.0.0.1:5173' }}
+          BROWSER: ${{ inputs.browser || 'firefox' }}
+          HEADLESS: 'true'
+        run: |
+          node selenium-tests/runner.js
+
+      - name: 6. Upload Excel Analysis Report Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aegis-grc-excel-analysis-report
+          path: selenium-tests/reports/*.xlsx
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: 7. Generate GitHub Step Summary
+        if: always()
+        run: |
+          echo "## 📊 AEGIS GRC - Selenium E2E Quality Report" >> $GITHUB_STEP_SUMMARY
+          echo "Excel analysis spreadsheet generated and uploaded to workflow artifacts." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Engine** | Selenium WebDriver (${{ inputs.browser || 'firefox' }} Headless) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Target** | ${{ inputs.base_url || 'http://127.0.0.1:5173' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Report Format** | Microsoft Excel (\`.xlsx\`) with Executive Dashboard & Route Analysis |" >> $GITHUB_STEP_SUMMARY
