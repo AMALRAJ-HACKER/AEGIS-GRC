@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Search, Plus, Boxes, Trash2, Laptop, Server, Cloud, Smartphone } from 'lucide-react';
-import { Card, CardBody } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Input, Select } from '@/components/ui/Input';
@@ -155,54 +155,44 @@ export function AssetsPage() {
           }
         />
       ) : (
-        <Card className="overflow-hidden">
-          <div className="hidden grid-cols-[1fr_120px_150px_110px_110px_40px] gap-3 border-b border-line bg-slate-50 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wide text-slate-500 md:grid">
-            <span>Asset</span>
-            <span>Type</span>
-            <span>Owner</span>
-            <span>Criticality</span>
-            <span>Status</span>
-            <span />
-          </div>
-          <ul className="divide-y divide-line">
-            {visible.map((a) => {
-              const Icon = TYPE_ICON[a.type] ?? Boxes;
-              return (
-                <li
-                  key={a.id}
-                  className="grid grid-cols-1 items-center gap-2 px-5 py-3.5 hover:bg-slate-50 md:grid-cols-[1fr_120px_150px_110px_110px_40px] md:gap-3"
-                >
-                  <div className="flex min-w-0 items-center gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-navy/5 text-navy">
-                      <Icon size={16} strokeWidth={1.9} />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-navy">{a.name}</p>
-                      <p className="truncate text-[11px] text-slate-500 md:hidden">
-                        {a.type} · {a.owner}
-                      </p>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {visible.map((a) => {
+            const Icon = TYPE_ICON[a.type] ?? Boxes;
+            return (
+              <Card key={a.id} className="overflow-hidden hover:border-blue/40 transition-colors group flex flex-col">
+                <div className="px-5 py-4 border-b border-line bg-slate-50">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-start gap-3 min-w-0">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-navy/5 text-navy">
+                        <Icon size={16} strokeWidth={1.9} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-bold text-navy">{a.name}</p>
+                        <p className="truncate text-[11px] text-slate-500">
+                          {a.type} · {a.owner || 'Unassigned'}
+                        </p>
+                      </div>
                     </div>
+                    <button
+                      onClick={() => setConfirmId(a.id)}
+                      className="rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-crimson transition-colors"
+                      aria-label={`Remove ${a.name}`}
+                    >
+                      <Trash2 size={15} strokeWidth={2} />
+                    </button>
                   </div>
-                  <span className="hidden text-xs capitalize text-slate-500 md:block">{a.type}</span>
-                  <span className="hidden truncate text-xs text-slate-500 md:block">{a.owner || '—'}</span>
-                  <span className="hidden md:block">
-                    <Badge label={a.criticality} tone={critTone(a.criticality) as any} />
-                  </span>
-                  <span className="hidden md:block">
+                </div>
+                <div className="px-5 py-4">
+                  <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mb-3">
+                    <Badge label={a.type} tone="default" />
                     <Badge label={a.status} tone={statusTone(a.status) as any} />
-                  </span>
-                  <button
-                    onClick={() => setConfirmId(a.id)}
-                    className="hidden rounded-lg p-1.5 text-slate-500 hover:bg-red-50 hover:text-crimson md:block"
-                    aria-label={`Remove ${a.name}`}
-                  >
-                    <Trash2 size={15} />
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </Card>
+                  </div>
+                  <Badge label={a.criticality} tone={critTone(a.criticality) as any} className="mb-3 block" />
+                </div>
+              </Card>
+            );
+          })}
+        </div>
       )}
 
       <Modal open={open} onClose={() => setOpen(false)} title="Add asset">

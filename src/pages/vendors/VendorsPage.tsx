@@ -152,44 +152,57 @@ export function VendorsPage() {
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {visible.map((v) => (
-            <Card key={v.id} className="flex flex-col p-5">
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex min-w-0 items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-navy/5 text-navy">
-                    <Building2 size={19} strokeWidth={1.9} />
+            <Card key={v.id} className="overflow-hidden hover:border-blue/40 transition-colors group">
+              <div className="px-5 py-4 border-b border-line bg-slate-50">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-start gap-3 min-w-0">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-navy/5 text-navy">
+                      <Building2 size={19} strokeWidth={1.9} />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="truncate text-sm font-bold text-navy">{v.name}</h3>
+                      <p className="truncate text-[11px] text-slate-500">{v.category || 'Uncategorised'}</p>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="truncate text-sm font-bold text-navy">{v.name}</h3>
-                    <p className="truncate text-[11px] text-slate-500">{v.category || 'Uncategorised'}</p>
-                  </div>
+                  <button
+                    onClick={() => setConfirmId(v.id)}
+                    className="rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-crimson transition-colors"
+                    aria-label={`Remove ${v.name}`}
+                  >
+                    <Trash2 size={15} strokeWidth={2} />
+                  </button>
                 </div>
-                <button
-                  onClick={() => setConfirmId(v.id)}
-                  className="rounded-lg p-1.5 text-slate-500 hover:bg-red-50 hover:text-crimson"
-                  aria-label={`Remove ${v.name}`}
-                >
-                  <Trash2 size={15} />
-                </button>
               </div>
 
-              <p className="mt-3 line-clamp-2 min-h-[32px] text-xs text-slate-500">{v.service || 'No service description'}</p>
-
-              <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                <Badge label={v.criticality} tone={critTone(v.criticality) as any} />
-                <Badge label={v.status.replace('_', ' ')} tone={statusTone(v.status) as any} />
-                <Badge
-                  label={v.dpaSigned ? 'DPA signed' : 'DPA missing'}
-                  tone={v.dpaSigned ? 'success' : 'critical'}
-                />
+              <div className="px-5 py-4">
+                <p className="text-[11px] text-slate-400 font-semibold uppercase tracking-wide mb-2">
+                  Service
+                </p>
+                <p className="line-clamp-2 min-h-[32px] text-sm text-slate-600 leading-relaxed">
+                  {v.service || 'No service description'}
+                </p>
               </div>
 
-              <div className="mt-3 flex items-center gap-1.5 border-t border-line pt-3 text-[11px] text-slate-500">
-                {v.dpaSigned ? (
-                  <ShieldCheck size={13} className="text-emerald" />
-                ) : (
-                  <ShieldAlert size={13} className="text-crimson" />
-                )}
-                <span className="truncate">{v.contact || 'No contact on file'}</span>
+              <div className="px-5 py-3">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <Badge label={v.criticality} tone={critTone(v.criticality) as any} />
+                  <Badge label={v.status.replace('_', ' ')} tone={statusTone(v.status) as any} />
+                  <Badge
+                    label={v.dpaSigned ? 'DPA signed' : 'DPA missing'}
+                    tone={v.dpaSigned ? 'success' : 'critical'}
+                  />
+                </div>
+              </div>
+
+              <div className="px-5 py-4 border-t border-line bg-white/50">
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
+                  {v.dpaSigned ? (
+                    <ShieldCheck size={13} className="text-emerald" />
+                  ) : (
+                    <ShieldAlert size={13} className="text-crimson" />
+                  )}
+                  <span className="truncate">{v.contact || 'No contact on file'}</span>
+                </div>
               </div>
             </Card>
           ))}
