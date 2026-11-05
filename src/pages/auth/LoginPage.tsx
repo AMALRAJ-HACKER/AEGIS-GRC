@@ -38,10 +38,17 @@ export function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-canvas px-4">
       <div className="w-full max-w-sm">
-        <div className="mb-6 flex flex-col items-center">
-          <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-navy text-white">
+        <div className="mb-6 flex flex-col items-start">
+          <Link
+            to="/"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('/');
+            }}
+            className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-navy text-white hover:bg-navy/90 transition-colors cursor-pointer"
+          >
             <ShieldCheck size={30} stroke="currentColor" />
-          </div>
+          </Link>
           <h1 className="text-xl font-bold text-navy">AEGIS GRC</h1>
           <p className="mt-0.5 text-xs text-slate-600">Governance, Risk & Compliance — Simplified</p>
         </div>
