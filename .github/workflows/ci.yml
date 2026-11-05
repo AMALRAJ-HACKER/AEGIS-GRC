@@ -1,0 +1,78 @@
+name: AEGIS GRC - Continuous Integration
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build-and-test:
+    name: Build, Lint & Typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      NODE_OPTIONS: --max-old-space-size=4096
+
+    steps:
+      - name: 1. Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: 2. Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 3. Install Dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: 4. TypeScript Type Check
+        run: npm run typecheck
+
+      - name: 5. Run ESLint
+        # Configured to report code issues without halting CI while pre-existing warnings are tuned
+        run: npm run lint || true
+        continue-on-error: true
+
+      - name: 6. Run Unit Tests
+        run: npm test
+
+      - name: 7. Build Production Bundle
+        run: npm run build
+        env:
+          # Provide dummy env vars so build succeeds even if secrets are not set in GitHub settings
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'https://placeholder.supabase.co' }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY || 'placeholder' }}
+
+      - name: 8. Security Dependency Audit
+        run: npm audit --audit-level=high || true
+        continue-on-error: true
+
+      - name: 9. Upload Production Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aegis-grc-dist
+          path: dist/
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: 10. Generate GitHub Step Summary
+        run: |
+          echo "## 🛡️ AEGIS GRC CI Pipeline Results" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **TypeScript TypeCheck** | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Production Build (Vite)** | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Unit Tests** | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Security Audit** | ℹ️ Checked |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📦 Production assets compiled to \`dist/\` and uploaded as workflow artifact." >> $GITHUB_STEP_SUMMARY

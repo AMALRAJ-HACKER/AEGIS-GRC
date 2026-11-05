@@ -1,0 +1,98 @@
+name: AEGIS GRC - k6 Load & Diagnostics
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_type:
+        description: 'Test Target'
+        required: true
+        default: 'frontend'
+        type: choice
+        options:
+          - frontend
+          - supabase
+          - both
+      frontend_url:
+        description: 'Frontend URL to test (e.g., Netlify production or preview)'
+        required: false
+        default: 'https://aegis-grc.netlify.app'
+      vus:
+        description: 'Number of Virtual Users (VUs)'
+        required: true
+        default: '100'
+      duration:
+        description: 'Test Duration (e.g. 1m, 2m, 5m)'
+        required: true
+        default: '1m'
+
+permissions:
+  contents: read
+
+jobs:
+  k6-diagnostic-test:
+    name: Run k6 Load & Status Diagnostic
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: 1. Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 2. Setup k6
+        uses: grafana/setup-k6-action@v1
+
+      # -----------------------------------------------------------------
+      # Frontend Load Test
+      # -----------------------------------------------------------------
+      - name: 3. Run Frontend Load Test
+        if: inputs.target_type == 'frontend' || inputs.target_type == 'both'
+        run: |
+          echo "🚀 Launching k6 Frontend Load Test against ${{ inputs.frontend_url }}..."
+          k6 run \
+            -e TARGET_URL="${{ inputs.frontend_url }}" \
+            -e VUS="${{ inputs.vus }}" \
+            -e DURATION="${{ inputs.duration }}" \
+            load-tests/frontend-load-test.js || true
+
+          if [ -f load-test-summary.md ]; then
+            cat load-test-summary.md >> $GITHUB_STEP_SUMMARY
+          fi
+
+      # -----------------------------------------------------------------
+      # Supabase Backend Load Test
+      # -----------------------------------------------------------------
+      - name: 4. Run Supabase Backend Load Test
+        if: inputs.target_type == 'supabase' || inputs.target_type == 'both'
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "⚠️ Secrets VITE_SUPABASE_URL and/or VITE_SUPABASE_ANON_KEY are not configured in GitHub Secrets. Using fallback/placeholder."
+          fi
+          echo "🚀 Launching k6 Supabase Backend Load Test..."
+          k6 run \
+            -e SUPABASE_URL="${SUPABASE_URL:-https://placeholder.supabase.co}" \
+            -e SUPABASE_ANON_KEY="${SUPABASE_ANON_KEY:-placeholder}" \
+            -e VUS="${{ inputs.vus }}" \
+            -e DURATION="${{ inputs.duration }}" \
+            load-tests/supabase-load-test.js || true
+
+          if [ -f supabase-load-summary.md ]; then
+            cat supabase-load-summary.md >> $GITHUB_STEP_SUMMARY
+          fi
+
+      # -----------------------------------------------------------------
+      # Upload Results Artifacts
+      # -----------------------------------------------------------------
+      - name: 5. Upload Load Test Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-diagnostic-results
+          path: |
+            load-test-summary.md
+            load-test-summary.json
+            supabase-load-summary.md
+            supabase-load-summary.json
+          if-no-files-found: ignore
+          retention-days: 14
