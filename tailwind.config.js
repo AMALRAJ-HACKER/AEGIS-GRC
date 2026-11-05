@@ -3,8 +3,7 @@ import colors from 'tailwindcss/colors';
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
-  // Light mode only. No dark mode variant is used anywhere in the app.
-  darkMode: 'class',
+  // Light mode only. Dark mode is intentionally not configured.
   theme: {
     extend: {
       colors: {

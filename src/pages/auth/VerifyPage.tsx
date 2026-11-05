@@ -26,11 +26,11 @@ export function VerifyPage() {
           <h1 className="text-lg font-bold text-navy">Confirm your email</h1>
         </div>
         <div className="card flex flex-col items-center p-6 text-center">
-          <MailWarning size={36} className="mb-3 text-amber2" />
+          <MailWarning size={36} className="mb-3 text-amber-700" />
           <p className="text-sm text-slate-600">
             We sent a confirmation link to <span className="font-bold text-navy">{email || 'your inbox'}</span>. Click it, then sign in.
           </p>
-          {sent && <p className="mt-3 rounded-lg bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald2">Confirmation email re-sent.</p>}
+          {sent && <p className="mt-3 rounded-lg bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-700">Confirmation email re-sent.</p>}
           {error && <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-xs font-medium text-crimson">{error}</p>}
           <div className="mt-5 flex w-full flex-col gap-2">
             <Button variant="secondary" onClick={resend}>Resend link</Button>

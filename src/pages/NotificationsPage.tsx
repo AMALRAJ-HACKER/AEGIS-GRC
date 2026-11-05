@@ -76,14 +76,13 @@ export function NotificationsPage() {
                 <li key={n.id}>
                   <Link
                     to={n.resource_id ? `/${n.resource_type ?? 'dashboard'}/${n.resource_id}` : '/dashboard'}
-                    onClick={() => !n.is_read && readOne.mutate(n.id)}
                     className={`flex items-start gap-3 px-5 py-4 transition-colors hover:bg-slate-50 ${
                       n.is_read ? '' : 'bg-blue-light/40'
                     }`}
                   >
                     <span
                       className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
-                        n.is_read ? 'bg-slate-100 text-slate-400' : 'bg-blue-light text-blue-dark'
+                        n.is_read ? 'bg-slate-100 text-slate-500' : 'bg-blue-light text-blue-dark'
                       }`}
                     >
                       <Icon size={17} strokeWidth={1.9} />
@@ -94,7 +93,7 @@ export function NotificationsPage() {
                         {!n.is_read && <span className="h-2 w-2 shrink-0 rounded-full bg-blue" />}
                       </div>
                       {n.body && <p className="mt-0.5 text-xs text-slate-500">{n.body}</p>}
-                      <p className="mt-1 text-[11px] text-slate-400">{timeAgo(n.created_at)}</p>
+                      <p className="mt-1 text-[11px] text-slate-500">{timeAgo(n.created_at)}</p>
                     </div>
                   </Link>
                 </li>

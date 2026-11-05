@@ -62,7 +62,7 @@ export function AuditLogPage() {
                 <div key={a.id} className="flex items-center justify-between gap-3 py-3">
                   <div className="flex items-start gap-2">
                     <span className="font-semibold text-navy">{a.actor?.full_name ?? 'System'}</span>{' '}
-                    <span className="capitalize text-slate-400">{a.action.replace(/_/g, ' ')}</span>{' '}
+                    <span className="capitalize text-slate-500">{a.action.replace(/_/g, ' ')}</span>{' '}
                     <span className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs uppercase text-navy">{a.resource_type}</span>
                   </div>
                   <span className="text-sm text-slate-500">{fmtDateTime(a.created_at)}</span>

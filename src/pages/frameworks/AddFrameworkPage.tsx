@@ -49,7 +49,7 @@ export function AddFrameworkPage() {
       </div>
 
       <div className="relative max-w-md">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search frameworks…" className="w-full rounded-lg border border-line bg-white py-2.5 pl-9 pr-3 text-sm focus-ring" />
       </div>
 

@@ -128,12 +128,12 @@ export function AssetsPage() {
       />
 
       <div className="relative max-w-sm">
-        <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search assets…"
-          className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-400 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
+          className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-500 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
         />
       </div>
 
@@ -178,7 +178,7 @@ export function AssetsPage() {
                     </span>
                     <div className="min-w-0">
                       <p className="truncate text-sm font-medium text-navy">{a.name}</p>
-                      <p className="truncate text-[11px] text-slate-400 md:hidden">
+                      <p className="truncate text-[11px] text-slate-500 md:hidden">
                         {a.type} · {a.owner}
                       </p>
                     </div>
@@ -193,7 +193,7 @@ export function AssetsPage() {
                   </span>
                   <button
                     onClick={() => setConfirmId(a.id)}
-                    className="hidden rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-crimson md:block"
+                    className="hidden rounded-lg p-1.5 text-slate-500 hover:bg-red-50 hover:text-crimson md:block"
                     aria-label={`Remove ${a.name}`}
                   >
                     <Trash2 size={15} />

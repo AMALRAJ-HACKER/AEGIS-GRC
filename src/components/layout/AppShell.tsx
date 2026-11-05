@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   ShieldCheck,
@@ -79,7 +79,7 @@ function NavRow({ item, onNavigate }: { item: NavEntry; onNavigate?: () => void 
     >
       {({ isActive }) => (
         <>
-          <Icon size={18} strokeWidth={1.9} className={isActive ? 'text-white' : 'text-slate-400 group-hover:text-navy'} />
+          <Icon size={18} strokeWidth={1.9} className={isActive ? 'text-white' : 'text-slate-500 group-hover:text-navy'} />
           <span className="truncate">{item.label}</span>
           {isActive && <ChevronRight size={14} className="ml-auto text-white/60" />}
         </>
@@ -107,7 +107,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         </div>
         <div className="min-w-0">
           <p className="truncate text-sm font-bold leading-tight text-navy">AEGIS GRC</p>
-          <p className="truncate text-[11px] leading-tight text-slate-400">
+          <p className="truncate text-[11px] leading-tight text-slate-500">
             {orgCtx?.org?.name ?? 'Compliance Platform'}
           </p>
         </div>
@@ -117,7 +117,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
       <nav className="thin-scroll flex-1 space-y-6 overflow-y-auto px-3 py-5">
         {NAV_GROUPS.map((group) => (
           <div key={group.heading}>
-            <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-widest text-slate-500">
               {group.heading}
             </p>
             <div className="space-y-1">
@@ -139,7 +139,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           onClick={handleSignOut}
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-red-50 hover:text-crimson"
         >
-          <LogOut size={18} strokeWidth={1.9} className="text-slate-400" />
+          <LogOut size={18} strokeWidth={1.9} className="text-slate-500" />
           Sign out
         </button>
       </div>
@@ -178,12 +178,12 @@ function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
 
       {/* Search */}
       <form onSubmit={submitSearch} className="relative w-full max-w-md">
-        <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search pages, controls, risks…"
-          className="w-full rounded-lg border border-line bg-slate-50 py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-400 focus:border-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue/15"
+          className="w-full rounded-lg border border-line bg-slate-50 py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-500 focus:border-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue/15"
         />
         {matches.length > 0 && (
           <div className="absolute left-0 right-0 top-full z-40 mt-1 overflow-hidden rounded-xl border border-line bg-white shadow-pop">
@@ -197,7 +197,7 @@ function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
                 }}
                 className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50 hover:text-navy"
               >
-                <m.icon size={15} className="text-slate-400" />
+                <m.icon size={15} className="text-slate-500" />
                 {m.label}
               </button>
             ))}
@@ -226,7 +226,7 @@ function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
             <span className="block truncate text-xs font-semibold text-navy">
               {orgCtx?.profile?.full_name ?? 'Account'}
             </span>
-            <span className="block truncate text-[11px] text-slate-400">
+            <span className="block truncate text-[11px] text-slate-500">
               {roleLabel(orgCtx?.role ?? 'staff')}
             </span>
           </span>
@@ -238,6 +238,7 @@ function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
 
 export function AppShell() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <div className="min-h-screen bg-canvas">
@@ -271,9 +272,11 @@ export function AppShell() {
       <div className="flex min-h-screen flex-col lg:pl-64">
         <Topbar onOpenMenu={() => setDrawerOpen(true)} />
         <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-          <Outlet />
+          <div key={location.pathname} className="animate-fade-up">
+            <Outlet />
+          </div>
         </main>
-        <footer className="border-t border-line px-4 py-4 text-center text-[11px] text-slate-400 sm:px-6">
+        <footer className="border-t border-line px-4 py-4 text-center text-[11px] text-slate-500 sm:px-6">
           AEGIS GRC · Governance, Risk &amp; Compliance · Light mode
         </footer>
       </div>

@@ -94,7 +94,7 @@ export function TaskDetailPage() {
           {status === 'blocked' && isAssignee && (
             <Button size="sm" onClick={() => patch.mutate({ status: 'in_progress' })}><RotateCcw size={14} stroke="currentColor" /> Resume</Button>
           )}
-          {status === 'done' && <span className="text-xs font-semibold text-emerald2">Task closed.</span>}
+          {status === 'done' && <span className="text-xs font-semibold text-emerald-700">Task closed.</span>}
         </CardBody>
       </Card>
 

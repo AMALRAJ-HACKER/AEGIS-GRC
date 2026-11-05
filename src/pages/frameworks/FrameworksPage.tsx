@@ -108,12 +108,12 @@ export function FrameworksPage() {
           className="flex-1"
         />
         <div className="relative w-full sm:w-72">
-          <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search frameworks…"
-            className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-400 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
+            className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-500 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
           />
         </div>
       </div>
@@ -149,7 +149,7 @@ export function FrameworksPage() {
                     </div>
                     <div className="min-w-0">
                       <h3 className="truncate text-sm font-bold text-navy">{f.name}</h3>
-                      <p className="text-[11px] text-slate-400">
+                      <p className="text-[11px] text-slate-500">
                         {f.version ? `v${f.version} · ` : ''}
                         {f.controlCount ?? 0} controls
                       </p>

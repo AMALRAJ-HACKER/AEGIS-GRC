@@ -88,12 +88,12 @@ export function EvidencePage() {
       />
 
       <div className="relative max-w-sm">
-        <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search evidence…"
-          className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-400 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
+          className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-500 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
         />
       </div>
 
@@ -141,15 +141,15 @@ export function EvidencePage() {
               <p className="mt-0.5 line-clamp-2 min-h-[32px] text-xs text-slate-500">
                 {e.description || e.file_name || 'No description'}
               </p>
-              <div className="mt-3 flex items-center justify-between border-t border-line pt-3 text-[11px] text-slate-400">
+              <div className="mt-3 flex items-center justify-between border-t border-line pt-3 text-[11px] text-slate-500">
                 <span className="inline-flex items-center gap-1">
                   <CalendarClock size={12} /> {fmtDate(e.expiry_date)}
                 </span>
                 <span>{fmtBytes(e.file_size)}</span>
               </div>
-              <div className="mt-2 flex items-center justify-between text-[11px] text-slate-400">
+              <div className="mt-2 flex items-center justify-between text-[11px] text-slate-500">
                 <span className="truncate">{e.uploader?.full_name ?? 'Unknown uploader'}</span>
-                <ChevronRight size={14} className="text-slate-300" />
+                <ChevronRight size={14} className="text-slate-500" />
               </div>
             </Link>
           ))}

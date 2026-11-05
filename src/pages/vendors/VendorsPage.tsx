@@ -123,12 +123,12 @@ export function VendorsPage() {
       />
 
       <div className="relative max-w-sm">
-        <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search vendors…"
-          className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-400 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
+          className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-500 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
         />
       </div>
 
@@ -160,12 +160,12 @@ export function VendorsPage() {
                   </div>
                   <div className="min-w-0">
                     <h3 className="truncate text-sm font-bold text-navy">{v.name}</h3>
-                    <p className="truncate text-[11px] text-slate-400">{v.category || 'Uncategorised'}</p>
+                    <p className="truncate text-[11px] text-slate-500">{v.category || 'Uncategorised'}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setConfirmId(v.id)}
-                  className="rounded-lg p-1.5 text-slate-300 hover:bg-red-50 hover:text-crimson"
+                  className="rounded-lg p-1.5 text-slate-500 hover:bg-red-50 hover:text-crimson"
                   aria-label={`Remove ${v.name}`}
                 >
                   <Trash2 size={15} />
@@ -183,7 +183,7 @@ export function VendorsPage() {
                 />
               </div>
 
-              <div className="mt-3 flex items-center gap-1.5 border-t border-line pt-3 text-[11px] text-slate-400">
+              <div className="mt-3 flex items-center gap-1.5 border-t border-line pt-3 text-[11px] text-slate-500">
                 {v.dpaSigned ? (
                   <ShieldCheck size={13} className="text-emerald" />
                 ) : (

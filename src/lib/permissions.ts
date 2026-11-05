@@ -7,7 +7,10 @@ export const isAdmin = (role: Role | string) => ['super_admin', 'org_admin'].inc
 export const isReviewer = (role: Role | string) => ['super_admin', 'org_admin', 'grc_analyst', 'auditor'].includes(role);
 export const isAnalyst = (role: Role | string) => ['super_admin', 'org_admin', 'grc_analyst'].includes(role);
 export const canAddRisk = (role: Role | string) => ['super_admin', 'org_admin', 'grc_analyst', 'it_security'].includes(role);
-export const canActivateFramework = (role: Role | string) => ['super_admin', 'org_admin', 'grc_analyst'].includes(role);
+export const canActivateFramework = (role: Role | string) =>
+  ['super_admin', 'org_admin', 'grc_analyst', 'it_security', 'management'].includes(
+    String(role).trim().toLowerCase(),
+  );
 export const canDeleteEvidence = (role: Role | string) => ['super_admin', 'org_admin'].includes(role);
 export const canDeleteTask = (role: Role | string) => ['super_admin', 'org_admin'].includes(role);
 export const canViewAuditLog = (role: Role | string) => ['super_admin', 'org_admin', 'grc_analyst', 'auditor'].includes(role);

@@ -1,6 +1,6 @@
 import { useState, type InputHTMLAttributes, type SelectHTMLAttributes, type TextareaHTMLAttributes } from 'react';
 
-const FIELD = 'w-full rounded-lg border border-line bg-white px-3 py-2.5 text-sm text-ink placeholder:text-slate-400 focus-ring focus:border-blue';
+const FIELD = 'w-full rounded-lg border border-line bg-white px-3 py-2.5 text-sm text-ink placeholder:text-slate-500 focus-ring focus:border-blue';
 
 export function Field({ label, error, hint, children }: { label: string; error?: string | null; hint?: string; children: any }) {
   return (

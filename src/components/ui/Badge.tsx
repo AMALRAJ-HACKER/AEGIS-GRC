@@ -3,9 +3,9 @@ import type { ReactNode } from 'react';
 type Tone = 'success' | 'warning' | 'critical' | 'info' | 'default';
 
 const TONES: Record<Tone, string> = {
-  success: 'bg-emerald-50 text-emerald2 border-emerald-200',
-  warning: 'bg-amber-50 text-amber2 border-amber-200',
-  critical: 'bg-red-50 text-crimson border-red-200',
+  success: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  warning: 'bg-amber-50 text-amber-700 border-amber-200',
+  critical: 'bg-red-50 text-red-700 border-red-200',
   info: 'bg-blue-light text-blue-dark border-blue-200',
   default: 'bg-gray-100 text-slate-600 border-line',
 };

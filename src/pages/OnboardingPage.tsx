@@ -77,7 +77,7 @@ export function OnboardingPage() {
             </div>
           </button>
           <button onClick={() => setMode('join')} className="card flex flex-col items-start gap-3 p-6 text-left transition-shadow hover:shadow-pop focus-ring">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald2"><Ticket size={20} stroke="currentColor" /></div>
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"><Ticket size={20} stroke="currentColor" /></div>
             <div>
               <div className="text-sm font-bold text-navy">Join with invitation</div>
               <p className="mt-1 text-xs text-slate-600">Enter the invite token shared by your administrator.</p>

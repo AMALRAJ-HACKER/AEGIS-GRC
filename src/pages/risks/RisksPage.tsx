@@ -116,12 +116,12 @@ export function RisksPage() {
       />
 
       <div className="relative max-w-sm">
-        <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search risks, category or owner…"
-          className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-400 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
+          className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-500 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
         />
       </div>
 
@@ -181,12 +181,12 @@ export function RisksPage() {
                               ? 'shrink-0 text-crimson'
                               : sev === 'high'
                                 ? 'shrink-0 text-amber'
-                                : 'shrink-0 text-slate-400'
+                                : 'shrink-0 text-slate-500'
                           }
                         />
                         <span className="truncate text-sm font-medium text-navy">{r.title}</span>
                       </span>
-                      <span className="mt-0.5 block truncate text-[11px] text-slate-400 lg:hidden">
+                      <span className="mt-0.5 block truncate text-[11px] text-slate-500 lg:hidden">
                         {r.category ?? 'Uncategorised'} · {severityLabel(sev)} · score {score}
                       </span>
                     </span>
@@ -199,7 +199,7 @@ export function RisksPage() {
                       {r.owner?.full_name ?? 'Unassigned'}
                     </span>
                     <span className="hidden text-xs text-slate-500 lg:block">{fmtDate(r.target_date)}</span>
-                    <ChevronRight size={15} className="hidden text-slate-300 lg:block" />
+                    <ChevronRight size={15} className="hidden text-slate-500 lg:block" />
                   </Link>
                 </li>
               );

@@ -30,7 +30,7 @@ export function ResetPasswordPage() {
         </div>
         {sent ? (
           <div className="card flex flex-col items-center p-6 text-center">
-            <MailCheck size={36} className="mb-3 text-emerald2" />
+            <MailCheck size={36} className="mb-3 text-emerald-700" />
             <p className="text-sm font-semibold text-navy">Check your inbox</p>
             <p className="mt-1 text-xs text-slate-600">We sent a password reset link to <span className="font-semibold">{email}</span>.</p>
             <Link to="/login" className="mt-4 text-xs font-semibold text-blue hover:underline">← Back to sign in</Link>

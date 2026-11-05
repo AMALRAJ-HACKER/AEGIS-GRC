@@ -56,11 +56,11 @@ function Kpi({
         <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${tones[tone]}`}>
           <Icon size={19} strokeWidth={1.9} />
         </div>
-        <ArrowUpRight size={16} className="text-slate-300 transition-colors group-hover:text-navy" />
+        <ArrowUpRight size={16} className="text-slate-500 transition-colors group-hover:text-navy" />
       </div>
       <p className="mt-4 text-2xl font-bold tracking-tight text-navy">{value}</p>
       <p className="text-sm font-medium text-slate-600">{label}</p>
-      <p className="mt-0.5 text-[11px] text-slate-400">{hint}</p>
+      <p className="mt-0.5 text-[11px] text-slate-500">{hint}</p>
     </Link>
   );
 }
@@ -212,7 +212,7 @@ export function DashboardPage() {
               <Spinner />
             ) : data.activated.length === 0 ? (
               <div className="rounded-xl border border-dashed border-line bg-slate-50/60 px-6 py-10 text-center">
-                <ShieldCheck size={28} className="mx-auto text-slate-300" />
+                <ShieldCheck size={28} className="mx-auto text-slate-500" />
                 <p className="mt-2 text-sm font-semibold text-navy">No frameworks activated yet</p>
                 <p className="mt-1 text-xs text-slate-500">
                   Activate ISO 27001, SOC 2, NIST CSF and more to start tracking compliance.
@@ -232,7 +232,7 @@ export function DashboardPage() {
                     <ComplianceRing score={f.score ?? 0} size={64} />
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold text-navy">{f.name}</p>
-                      <p className="text-[11px] text-slate-400">
+                      <p className="text-[11px] text-slate-500">
                         {f.implemented}/{f.total} controls
                       </p>
                       <Badge
@@ -266,7 +266,7 @@ export function DashboardPage() {
                 <div className="flex items-end justify-between">
                   <div>
                     <p className="text-3xl font-bold text-navy">{data.openRisks.length}</p>
-                    <p className="text-xs text-slate-400">open risks</p>
+                    <p className="text-xs text-slate-500">open risks</p>
                   </div>
                   <Badge
                     label={data.severity.critical > 0 ? `${data.severity.critical} critical` : 'No critical'}
@@ -303,7 +303,7 @@ export function DashboardPage() {
             {tasks.isLoading ? (
               <Spinner />
             ) : upcomingTasks.length === 0 ? (
-              <p className="px-5 py-8 text-center text-xs text-slate-400">You're all caught up.</p>
+              <p className="px-5 py-8 text-center text-xs text-slate-500">You're all caught up.</p>
             ) : (
               <ul className="divide-y divide-line">
                 {upcomingTasks.map((t) => (
@@ -323,7 +323,7 @@ export function DashboardPage() {
                       />
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-sm font-medium text-navy">{t.title}</span>
-                        <span className="block text-[11px] text-slate-400">
+                        <span className="block text-[11px] text-slate-500">
                           {taskLabel(t.status)} · due {t.due_date ? new Date(t.due_date).toLocaleDateString('en-GB') : '—'}
                         </span>
                       </span>
@@ -351,8 +351,8 @@ export function DashboardPage() {
               <Spinner />
             ) : recentActivity.length === 0 ? (
               <div className="px-5 py-10 text-center">
-                <Activity size={24} className="mx-auto text-slate-300" />
-                <p className="mt-2 text-xs text-slate-400">No activity yet.</p>
+                <Activity size={24} className="mx-auto text-slate-500" />
+                <p className="mt-2 text-xs text-slate-500">No activity yet.</p>
               </div>
             ) : (
               <ul className="divide-y divide-line">
@@ -366,7 +366,7 @@ export function DashboardPage() {
                         <span className="font-medium text-navy">{a.actor?.full_name ?? 'System'}</span>{' '}
                         {String(a.action ?? '').replace(/_/g, ' ')}
                       </p>
-                      <p className="text-[11px] text-slate-400">
+                      <p className="text-[11px] text-slate-500">
                         {a.resource_type ?? 'item'} · {timeAgo(a.created_at)}
                       </p>
                     </div>
@@ -390,7 +390,7 @@ export function DashboardPage() {
 
 function ChevronRightSmall() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-300">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-500">
       <path d="m9 18 6-6-6-6" />
     </svg>
   );

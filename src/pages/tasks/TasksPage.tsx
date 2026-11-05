@@ -95,12 +95,12 @@ export function TasksPage() {
       />
 
       <div className="relative max-w-sm">
-        <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search tasks or assignee…"
-          className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-400 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
+          className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-500 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
         />
       </div>
 
@@ -161,7 +161,7 @@ export function TasksPage() {
                       <p className="mt-0.5 line-clamp-1 text-xs text-slate-500">
                         {t.description || 'No description'}
                       </p>
-                      <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-slate-400">
+                      <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-slate-500">
                         <span>{t.assignee?.full_name ?? 'Unassigned'}</span>
                         <span className={overdue ? 'inline-flex items-center gap-1 font-semibold text-crimson' : 'inline-flex items-center gap-1'}>
                           <CalendarClock size={12} /> {fmtDate(t.due_date)}
@@ -170,7 +170,7 @@ export function TasksPage() {
                         {t.risk?.title && <span>Risk: {t.risk.title}</span>}
                       </div>
                     </div>
-                    <ChevronRight size={15} className="mt-1 shrink-0 text-slate-300" />
+                    <ChevronRight size={15} className="mt-1 shrink-0 text-slate-500" />
                   </Link>
                 </li>
               );

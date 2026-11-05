@@ -84,7 +84,7 @@ export function AIAssistantPage() {
                 </div>
                 {m.role === 'assistant' && (
                   <div className="flex flex-wrap items-center gap-2 text-[10px] text-slate-600">
-                    {m.is_demo && <span className="rounded-full bg-amber-50 px-2 py-0.5 font-semibold text-amber2">DEMO</span>}
+                    {m.is_demo && <span className="rounded-full bg-amber-50 px-2 py-0.5 font-semibold text-amber-700">DEMO</span>}
                     {m.sources?.map((s) => <span key={s} className="rounded-full bg-gray-100 px-2 py-0.5">{s}</span>)}
                     <button onClick={() => copy(m.content, i)} className="inline-flex items-center gap-1 hover:text-navy">{copied === i ? <><CheckSquare size={10} stroke="currentColor" /> Copied</> : <><Copy size={10} stroke="currentColor" /> Copy</>}</button>
                     <button onClick={() => exportTask(m.content, i)} className="inline-flex items-center gap-1 hover:text-navy"><CheckSquare size={10} stroke="currentColor" /> Export as Task</button>

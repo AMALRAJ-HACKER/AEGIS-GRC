@@ -102,12 +102,12 @@ export function ControlsPage() {
                 <ComplianceRing score={f.score ?? 0} size={62} />
                 <div className="min-w-0 flex-1">
                   <h3 className="truncate text-sm font-bold text-navy">{f.name}</h3>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-500">
                     {f.implemented}/{f.total} implemented
                   </p>
                   <p className="mt-1 text-[11px] text-slate-500">{f.category}</p>
                 </div>
-                <ChevronRight size={16} className="text-slate-300" />
+                <ChevronRight size={16} className="text-slate-500" />
               </Link>
             ))}
           </div>
@@ -137,7 +137,7 @@ export function ControlsPage() {
     <div className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <nav className="mb-1 flex items-center gap-1 text-[11px] text-slate-400">
+          <nav className="mb-1 flex items-center gap-1 text-[11px] text-slate-500">
             <Link to="/frameworks" className="hover:text-navy">
               Frameworks
             </Link>
@@ -175,12 +175,12 @@ export function ControlsPage() {
       />
 
       <div className="relative max-w-sm">
-        <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search by code, title or category…"
-          className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-400 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
+          className="w-full rounded-lg border border-line bg-white py-2 pl-9 pr-3 text-sm text-ink placeholder:text-slate-500 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/15"
         />
       </div>
 
@@ -209,13 +209,13 @@ export function ControlsPage() {
                   <span className="font-mono text-xs font-semibold text-navy">{c.controlCode}</span>
                   <span className="min-w-0">
                     <span className="block truncate text-sm font-medium text-navy">{c.title}</span>
-                    <span className="block truncate text-[11px] text-slate-400 md:hidden">{c.category}</span>
+                    <span className="block truncate text-[11px] text-slate-500 md:hidden">{c.category}</span>
                   </span>
                   <span className="hidden truncate text-xs text-slate-500 md:block">{c.category}</span>
                   <span>
                     <Badge label={controlLabel(c.status)} tone={controlTone(c.status)} />
                   </span>
-                  <ChevronRight size={15} className="hidden text-slate-300 md:block" />
+                  <ChevronRight size={15} className="hidden text-slate-500 md:block" />
                 </Link>
               </li>
             ))}

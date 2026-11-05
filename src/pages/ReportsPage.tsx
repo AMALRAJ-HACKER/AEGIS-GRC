@@ -100,7 +100,7 @@ export function ReportsPage() {
           <CardHeader title="Compliance Health" subtitle="Per-framework score" />
           <CardBody className="space-y-3">
             {(stats.data ?? []).length === 0 && (
-              <p className="rounded-xl border border-dashed border-line bg-slate-50/60 px-4 py-8 text-center text-xs text-slate-400">
+              <p className="rounded-xl border border-dashed border-line bg-slate-50/60 px-4 py-8 text-center text-xs text-slate-500">
                 No activated frameworks yet. Activate a framework to see its compliance score here.
               </p>
             )}
@@ -108,7 +108,7 @@ export function ReportsPage() {
               <div key={f.id} className="flex items-center justify-between rounded-xl border border-line p-3">
                 <div>
                   <div className="text-sm font-bold text-navy">{f.name}</div>
-                  <div className="text-sm text-slate-400">{f.implemented}/{f.total} implemented · {f.score}%</div>
+                  <div className="text-sm text-slate-500">{f.implemented}/{f.total} implemented · {f.score}%</div>
                 </div>
                 <ComplianceRing score={f.score} size={40} />
               </div>
@@ -140,15 +140,15 @@ export function ReportsPage() {
           <CardBody className="grid grid-cols-2 gap-3 text-center sm:grid-cols-3">
             <div className="rounded-xl border border-line border-slate-200 p-3">
               <div className="text-2xl font-bold text-emerald-500">{evidenceCoverage.withEvidence}</div>
-              <div className="text-xs text-slate-400">Controls with evidence</div>
+              <div className="text-xs text-slate-500">Controls with evidence</div>
             </div>
             <div className="rounded-xl border border-line border-slate-200 p-3">
               <div className="text-2xl font-bold text-crimson">{evidenceCoverage.withoutEvidence}</div>
-              <div className="text-xs text-slate-400">Controls without evidence</div>
+              <div className="text-xs text-slate-500">Controls without evidence</div>
             </div>
             <div className="rounded-xl border border-line border-slate-200 p-3">
               <div className="text-2xl font-bold text-navy">{evidenceCoverage.total}</div>
-              <div className="text-xs text-slate-400">Total controls</div>
+              <div className="text-xs text-slate-500">Total controls</div>
             </div>
           </CardBody>
         </Card>
@@ -161,7 +161,7 @@ export function ReportsPage() {
             {([['critical', 'crimson'], ['high', 'amber'], ['medium', 'blue'], ['low', 'emerald']] as const).map(([k, c]) => (
               <div key={k} className={`rounded-xl p-3 text-center ${c === 'crimson' ? 'bg-crimson/5' : c === 'amber' ? 'bg-amber/5' : c === 'blue' ? 'bg-blue/5' : 'bg-emerald/5'}`}>
                 <div className="text-2xl font-bold">{openRisks.filter((x: any) => x.severity === k).length}</div>
-                <div className="text-xs font-semibold uppercase text-slate-400">{k}</div>
+                <div className="text-xs font-semibold uppercase text-slate-500">{k}</div>
               </div>
             ))}
           </CardBody>
@@ -175,7 +175,7 @@ export function ReportsPage() {
             {[['todo', 'Open'], ['in_progress', 'In Progress'], ['pending_review', 'Pending Review'], ['approved', 'Approved'], ['done', 'Closed'], ['blocked', 'Blocked']].map(([s, l]) => (
               <div key={s} className="rounded-xl border border-line border-slate-200 p-2 text-center">
                 <div className="text-lg font-bold text-navy">{tasks.data?.filter((x: any) => x.status === s).length}</div>
-                <div className="text-xs text-slate-400">{l}</div>
+                <div className="text-xs text-slate-500">{l}</div>
               </div>
             ))}
           </CardBody>
@@ -202,7 +202,7 @@ export function ReportsPage() {
               {f === 'off' ? 'Off' : f}
             </button>
           ))}
-          <p className="text-xs text-slate-400">This web app reads the same org record; schedule settings persist in Supabase if you save from Settings → General/Notifications in the mobile app or extend this page.</p>
+          <p className="text-xs text-slate-500">This web app reads the same org record; schedule settings persist in Supabase if you save from Settings → General/Notifications in the mobile app or extend this page.</p>
         </CardBody>
       </Card>
     </div>

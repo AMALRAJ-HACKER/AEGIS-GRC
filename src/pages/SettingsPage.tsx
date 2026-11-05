@@ -188,7 +188,7 @@ export function SettingsPage() {
                     </Select>
                   </div>
                   <Button type="submit" loading={inviteMut.isPending}><Send size={14} /> Invite</Button>
-                  {copied && <span className="text-xs font-semibold text-emerald2">Token copied to clipboard</span>}
+                  {copied && <span className="text-xs font-semibold text-emerald-700">Token copied to clipboard</span>}
                 </form>
                 {lastToken && (
                   <div className="mt-4 rounded-lg border border-line bg-canvas p-3">
@@ -215,7 +215,7 @@ export function SettingsPage() {
                       <div className="text-[11px] text-slate-600">{m.profile?.email} · {roleLabel(m.role)}</div>
                     </div>
                   </div>
-                  <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold uppercase text-emerald2">{m.status ?? 'active'}</span>
+                  <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold uppercase text-emerald-700">{m.status ?? 'active'}</span>
                 </div>
               ))}
             </CardBody>
@@ -273,7 +273,7 @@ export function SettingsPage() {
                       <div className="text-[10px] text-slate-600">{i.description}</div>
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold uppercase text-emerald2">Available</span>
+                  <span className="text-[10px] font-bold uppercase text-emerald-700">Available</span>
                 </div>
               ))}
               {(integrations.data ?? []).length === 0 && <p className="py-3 text-center text-xs text-slate-600 col-span-full">No integrations found. Apply migration 0011_enable_all_connectors.sql in Supabase.</p>}
@@ -310,7 +310,7 @@ export function SettingsPage() {
                     <div className="text-[10px] text-slate-600">{new Date(r.started_at).toLocaleString()}</div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-emerald2">{r.summary?.passed || 0} passed</span>
+                    <span className="text-emerald-700">{r.summary?.passed || 0} passed</span>
                     <span className="text-crimson">{r.summary?.failed || 0} failed</span>
                     <span className="text-slate-600">{r.summary?.errors || 0} errors</span>
                   </div>
