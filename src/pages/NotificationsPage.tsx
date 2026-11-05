@@ -72,10 +72,17 @@ export function NotificationsPage() {
           <ul className="divide-y divide-line">
             {items.map((n) => {
               const Icon = ICONS[n.type] ?? Bell;
+              const pluralRoutes: Record<string, string> = {
+                task: 'tasks',
+                risk: 'risks',
+                evidence: 'evidence',
+                framework: 'frameworks',
+                control: 'controls',
+              };
               return (
                 <li key={n.id}>
                   <Link
-                    to={n.resource_id ? `/${n.resource_type ?? 'dashboard'}/${n.resource_id}` : '/dashboard'}
+                    to={n.resource_id ? `/${pluralRoutes[n.resource_type] ?? n.resource_type ?? 'dashboard'}/${n.resource_id}` : '/dashboard'}
                     className={`flex items-start gap-3 px-5 py-4 transition-colors hover:bg-slate-50 ${
                       n.is_read ? '' : 'bg-blue-light/40'
                     }`}
