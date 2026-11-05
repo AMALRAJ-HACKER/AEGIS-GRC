@@ -636,3 +636,48 @@ export async function askAI(orgId: string, query: string, context?: string): Pro
     };
   }
 }
+/** Create a new framework for the org — seeds not_started assessments per control. */
+export async function createFramework(orgId: string, fields: { name: string; category: string; version?: string; description?: string }) {
+  const { data, error } = await supabase.from('frameworks').insert({
+    name: fields.name.trim(), category: fields.category.trim(), version: fields.version?.trim() ?? '', description: fields.description?.trim() ?? ''
+  }).select().single();
+  if (error) throw error;
+  if (!data?.id) return data;
+  // Seed assessments only if this framework already has controls (activateFramework pattern);
+  // a brand-new custom framework may have 0 controls — that is valid, not an error.
+  try { await activateFramework(orgId, data.id); } catch { /* framework created; seeding is best-effort */ }
+  return data;
+}
+
+export async function cloneFramework(orgId: string, sourceId: string, newName: string) {
+  const { data: src, error: sErr } = await supabase.from('frameworks').select('*').eq('id', sourceId).single();
+  if (sErr) throw sErr;
+  const { data: cloned, error: cErr } = await supabase.from('frameworks').insert({
+    name: newName.trim(), category: src?.category ?? 'Custom', version: src?.version ?? '1.0', description: src?.description ?? ''
+  }).select().single();
+  if (cErr) throw cErr;
+  if (cloned?.id) {
+    const { data: controls } = await supabase.from('framework_controls').select('*').eq('framework_id', sourceId);
+    if (controls?.length) {
+      const rows = controls.map((c: any) => ({
+        framework_id: cloned.id, control_id: c.control_id, title: c.title,
+        description: c.description ?? null, category: c.category ?? null,
+        implementation_guidance: c.implementation_guidance ?? null,
+      }));
+      await supabase.from('framework_controls').insert(rows);
+      try { await activateFramework(orgId, cloned.id); } catch { /* best-effort */ }
+    }
+  }
+  return cloned;
+}
+
+export async function addFrameworkControls(frameworkId: string, controls: Array<{ control_id: string; title: string; description?: string; category?: string; implementation_guidance?: string }>) {
+  const rows = controls.map((c) => ({
+    framework_id: frameworkId, control_id: c.control_id.trim(), title: c.title.trim(),
+    description: c.description?.trim() || null, category: c.category?.trim() || null,
+    implementation_guidance: c.implementation_guidance?.trim() || null,
+  }));
+  const { error } = await supabase.from('framework_controls').insert(rows);
+  if (error) throw error;
+  return rows.length;
+}
