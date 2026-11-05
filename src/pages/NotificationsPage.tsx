@@ -1,94 +1,106 @@
-import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Bell, CheckCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Bell, CheckCheck, AlertTriangle, CheckSquare, FileText, Sparkles } from 'lucide-react';
+import { Card, CardBody } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { EmptyState, Spinner } from '@/components/ui/States';
 import { useCurrentOrg } from '@/hooks/useOrg';
 import { fetchNotifications, markAllRead, markRead } from '@/services/api';
-import { fmtDateTime } from '@/lib/format';
-import { Button } from '@/components/ui/Button';
-import { Card, CardBody } from '@/components/ui/Card';
-import { Spinner, EmptyState } from '@/components/ui/States';
-import { Tabs } from '@/components/ui/Tabs';
+import { timeAgo } from '@/lib/format';
 
-type Tab = 'all' | 'tasks' | 'risks' | 'evidence' | 'approvals' | 'system';
+const ICONS: Record<string, typeof Bell> = {
+  task: CheckSquare,
+  risk: AlertTriangle,
+  evidence: FileText,
+  ai: Sparkles,
+};
 
 export function NotificationsPage() {
-  const { userId } = useCurrentOrg().data ?? { userId: '' };
-  const [tab, setTab] = useState<Tab>('all');
-  const navigate = useNavigate();
+  const { data: orgCtx } = useCurrentOrg();
+  const userId = orgCtx?.userId ?? '';
   const queryClient = useQueryClient();
-  const { data, isLoading } = useQuery({ queryKey: ['notifications', userId], queryFn: () => fetchNotifications(userId), enabled: !!userId });
 
-  const markAll = useMutation({
+  const { data, isLoading } = useQuery({
+    queryKey: ['notifications', userId],
+    queryFn: () => fetchNotifications(userId),
+    enabled: !!userId,
+  });
+
+  const readAll = useMutation({
     mutationFn: () => markAllRead(userId),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications', userId] }),
   });
-  const markOne = useMutation({
+
+  const readOne = useMutation({
     mutationFn: (id: string) => markRead(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications', userId] }),
   });
 
-  const list = useMemo(() => {
-    let items = data ?? [];
-    if (tab !== 'all') {
-      items = items.filter((n: any) => n.type?.startsWith(tab) || n.resource_type?.includes(tab) || (tab === 'system' && !n.resource_type));
-    }
-    return items;
-  }, [data, tab]);
-
-  const go = (n: any) => {
-    if (!n.is_read) markOne.mutate(n.id);
-    if (n.resource_type === 'task' && n.resource_id) navigate(`/tasks/${n.resource_id}`);
-    if (n.resource_type === 'risk' && n.resource_id) navigate(`/risks/${n.resource_id}`);
-    if (n.resource_type === 'evidence' && n.resource_id) navigate(`/evidence/${n.resource_id}`);
-    else if (n.resource_type === 'evidence') navigate('/evidence');
-  };
+  const items = (data ?? []) as any[];
+  const unread = items.filter((n) => !n.is_read).length;
 
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-2">
+    <div className="mx-auto max-w-3xl space-y-5">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-navy">Notifications</h1>
-          <p className="text-xs text-slate-600">Updates on tasks, risks, approvals and more</p>
+          <h1 className="text-2xl font-bold tracking-tight text-navy">Notifications</h1>
+          <p className="mt-1 text-sm text-slate-500">
+            {unread > 0 ? `${unread} unread` : 'You are all caught up'}
+          </p>
         </div>
-        <Button variant="secondary" size="sm" onClick={() => markAll.mutate()} loading={markAll.isPending}>
-          <CheckCheck size={14} /> Mark All as Read
+        <Button
+          size="sm"
+          variant="secondary"
+          disabled={unread === 0 || readAll.isPending}
+          loading={readAll.isPending}
+          onClick={() => readAll.mutate()}
+        >
+          <CheckCheck size={15} stroke="currentColor" /> Mark all read
         </Button>
       </div>
 
-      <Tabs<Tab>
-        tabs={[
-          { id: 'all', label: 'All' },
-          { id: 'tasks', label: 'Tasks' },
-          { id: 'risks', label: 'Risks' },
-          { id: 'evidence', label: 'Evidence' },
-          { id: 'approvals', label: 'Approvals' },
-          { id: 'system', label: 'System' },
-        ]}
-        active={tab}
-        onChange={setTab}
-      />
-
-      {list.length === 0 ? (
-        <EmptyState icon={<Bell size={22} />} title="No notifications" message="You're all caught up." />
+      {items.length === 0 ? (
+        <EmptyState
+          icon={<Bell size={22} stroke="currentColor" />}
+          title="No notifications"
+          message="Task assignments, risk escalations and evidence reminders will appear here."
+        />
       ) : (
-        <Card>
-          <CardBody className="divide-y divide-line">
-            {list.map((n: any) => (
-              <button key={n.id} onClick={() => go(n)} className="flex w-full items-start justify-between gap-3 py-3 text-left hover:bg-gray-50 focus-ring">
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    {!n.is_read && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-crimson" />}
-                    <span className="truncate text-xs font-semibold text-navy">{n.title}</span>
-                  </div>
-                  {n.body && <p className="mt-0.5 line-clamp-2 text-xs text-slate-600">{n.body}</p>}
-                  <span className="text-[10px] text-slate-600">{fmtDateTime(n.created_at)}</span>
-                </div>
-              </button>
-            ))}
-          </CardBody>
+        <Card className="overflow-hidden">
+          <ul className="divide-y divide-line">
+            {items.map((n) => {
+              const Icon = ICONS[n.type] ?? Bell;
+              return (
+                <li key={n.id}>
+                  <Link
+                    to={n.resource_id ? `/${n.resource_type ?? 'dashboard'}/${n.resource_id}` : '/dashboard'}
+                    onClick={() => !n.is_read && readOne.mutate(n.id)}
+                    className={`flex items-start gap-3 px-5 py-4 transition-colors hover:bg-slate-50 ${
+                      n.is_read ? '' : 'bg-blue-light/40'
+                    }`}
+                  >
+                    <span
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
+                        n.is_read ? 'bg-slate-100 text-slate-400' : 'bg-blue-light text-blue-dark'
+                      }`}
+                    >
+                      <Icon size={17} strokeWidth={1.9} />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="truncate text-sm font-semibold text-navy">{n.title}</p>
+                        {!n.is_read && <span className="h-2 w-2 shrink-0 rounded-full bg-blue" />}
+                      </div>
+                      {n.body && <p className="mt-0.5 text-xs text-slate-500">{n.body}</p>}
+                      <p className="mt-1 text-[11px] text-slate-400">{timeAgo(n.created_at)}</p>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </Card>
       )}
     </div>

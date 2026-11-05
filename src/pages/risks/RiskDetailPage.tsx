@@ -100,7 +100,7 @@ export function RiskDetailPage() {
                   onClick={() => (s === 'closed' ? setConfirmClose(true) : statusMut.mutate(s))}
                   disabled={statusMut.isPending || risk.status === s}
                   className={`rounded-full border px-3.5 py-1.5 text-xs font-semibold capitalize transition-colors focus-ring ${
-                    risk.status === s ? 'border-transparent bg-navy text-white dark:bg-blue-dark dark:hover:bg-blue' : 'border-line bg-white dark:bg-black text-slate-600 dark:text-slate-500 hover:border-gray-300 disabled:opacity-50'
+                    risk.status === s ? 'border-transparent bg-navy text-white' : 'border-line bg-white text-slate-600 hover:border-gray-300 disabled:opacity-50'
                   }`}
                 >
                   {s}
@@ -117,12 +117,12 @@ export function RiskDetailPage() {
           {(historyQ.data ?? []).length === 0 && <p className="py-2 text-xs text-slate-600">No history recorded yet.</p>}
           {(historyQ.data ?? []).map((h: any) => (
             <div key={h.id} className="flex items-start gap-3">
-              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-slate-600 dark:text-slate-500"><History size={13} stroke="currentColor" /></span>
+              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-100 text-slate-600"><History size={13} stroke="currentColor" /></span>
               <div className="text-xs">
-                <span className="font-semibold text-navy dark:text-white">{h.actor?.full_name ?? 'System'}</span>{' '}
-                changed <span className="font-mono text-[11px] text-blue-dark dark:text-blue-400">{h.field_changed}</span> from{' '}
+                <span className="font-semibold text-navy">{h.actor?.full_name ?? 'System'}</span>{' '}
+                changed <span className="font-mono text-[11px] text-blue-dark">{h.field_changed}</span> from{' '}
                 <span className="font-semibold">{h.old_value ?? '—'}</span> to <span className="font-semibold">{h.new_value ?? '—'}</span>
-                <div className="text-[10px] text-slate-500 dark:text-slate-400">{fmtDateTime(h.created_at)}</div>
+                <div className="text-[10px] text-slate-500">{fmtDateTime(h.created_at)}</div>
               </div>
             </div>
           ))}

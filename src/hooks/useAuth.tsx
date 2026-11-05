@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import type { Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 
@@ -13,31 +14,44 @@ const AuthContext = createContext<AuthState>({ session: null, loading: true, sig
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
+    let mounted = true;
+
     supabase.auth.getSession().then(({ data }) => {
+      if (!mounted) return;
       setSession(data.session ?? null);
       setLoading(false);
     });
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
-      setSession(s ?? null);
-      if (!s) queryClear();
+
+    const { data: sub } = supabase.auth.onAuthStateChange((event, next) => {
+      if (!mounted) return;
+      setSession(next ?? null);
+      setLoading(false);
+
+      // Any auth transition changes the visible workspace, so drop cached
+      // per-user data. Sign-out clears it entirely; sign-in refetches.
+      if (event === 'SIGNED_OUT') {
+        queryClient.clear();
+      } else {
+        queryClient.invalidateQueries();
+      }
     });
-    return () => sub.subscription.unsubscribe();
-  }, []);
+
+    return () => {
+      mounted = false;
+      sub.subscription.unsubscribe();
+    };
+  }, [queryClient]);
 
   const signOut = async () => {
     await supabase.auth.signOut();
     setSession(null);
-    queryClear();
+    queryClient.clear();
   };
 
   return <AuthContext.Provider value={{ session, loading, signOut }}>{children}</AuthContext.Provider>;
-}
-
-function queryClear() {
-  // clear react-query cache to prevent cross-account data on shared devices
-  import('@/lib/queryClient').then(({ queryClient }) => queryClient.clear());
 }
 
 export const useAuth = () => useContext(AuthContext);

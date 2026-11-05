@@ -63,7 +63,7 @@ export function AIAssistantPage() {
           <h1 className="flex items-center gap-2 text-lg font-bold text-navy"><Sparkles size={18} stroke="currentColor" className="text-blue" /> AI Assistant</h1>
           <p className="text-xs text-slate-600">Context: {context} · AI outputs require review by a qualified compliance professional.</p>
         </div>
-        <select value={context} onChange={(e) => setContext(e.target.value)} className="rounded-lg border border-line bg-white dark:bg-black px-3 py-1.5 text-xs text-ink dark:text-white focus-ring">
+        <select value={context} onChange={(e) => setContext(e.target.value)} className="rounded-lg border border-line bg-white px-3 py-1.5 text-xs text-ink focus-ring">
           <option value="general">General</option>
           <option value="frameworks">Frameworks & Controls</option>
           <option value="risks">Risk Register</option>
@@ -79,15 +79,15 @@ export function AIAssistantPage() {
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-navy text-white"><Bot size={16} stroke="currentColor" /></span>
               )}
               <div className={`max-w-[85%] space-y-2 ${m.role === 'user' ? 'text-right' : ''}`}>
-                <div className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${m.role === 'user' ? 'rounded-br-sm bg-navy text-white dark:bg-blue-dark' : 'rounded-bl-sm bg-canvas dark:bg-black text-slate-600 dark:text-slate-300'}`}>
+                <div className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${m.role === 'user' ? 'rounded-br-sm bg-navy text-white' : 'rounded-bl-sm bg-canvas text-slate-600'}`}>
                   <div className="whitespace-pre-wrap">{m.content}</div>
                 </div>
                 {m.role === 'assistant' && (
-                  <div className="flex flex-wrap items-center gap-2 text-[10px] text-slate-600 dark:text-slate-400">
-                    {m.is_demo && <span className="rounded-full bg-amber-50 dark:bg-amber-900/30 px-2 py-0.5 font-semibold text-amber2 dark:text-amber-400">DEMO</span>}
-                    {m.sources?.map((s) => <span key={s} className="rounded-full bg-gray-100 dark:bg-gray-700 px-2 py-0.5">{s}</span>)}
-                    <button onClick={() => copy(m.content, i)} className="inline-flex items-center gap-1 hover:text-navy dark:hover:text-blue-400">{copied === i ? <><CheckSquare size={10} stroke="currentColor" /> Copied</> : <><Copy size={10} stroke="currentColor" /> Copy</>}</button>
-                    <button onClick={() => exportTask(m.content, i)} className="inline-flex items-center gap-1 hover:text-navy dark:hover:text-blue-400"><CheckSquare size={10} stroke="currentColor" /> Export as Task</button>
+                  <div className="flex flex-wrap items-center gap-2 text-[10px] text-slate-600">
+                    {m.is_demo && <span className="rounded-full bg-amber-50 px-2 py-0.5 font-semibold text-amber2">DEMO</span>}
+                    {m.sources?.map((s) => <span key={s} className="rounded-full bg-gray-100 px-2 py-0.5">{s}</span>)}
+                    <button onClick={() => copy(m.content, i)} className="inline-flex items-center gap-1 hover:text-navy">{copied === i ? <><CheckSquare size={10} stroke="currentColor" /> Copied</> : <><Copy size={10} stroke="currentColor" /> Copy</>}</button>
+                    <button onClick={() => exportTask(m.content, i)} className="inline-flex items-center gap-1 hover:text-navy"><CheckSquare size={10} stroke="currentColor" /> Export as Task</button>
                   </div>
                 )}
               </div>

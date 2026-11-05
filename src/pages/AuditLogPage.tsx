@@ -34,7 +34,7 @@ export function AuditLogPage() {
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-navy dark:text-navy">Audit Log</h1>
+        <h1 className="text-2xl font-bold text-navy">Audit Log</h1>
         <Button size="sm" onClick={exportCsv}>
           <Download size={14} stroke="currentColor" /> Export CSV
         </Button>
@@ -65,7 +65,7 @@ export function AuditLogPage() {
                     <span className="capitalize text-slate-400">{a.action.replace(/_/g, ' ')}</span>{' '}
                     <span className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs uppercase text-navy">{a.resource_type}</span>
                   </div>
-                  <span className="text-sm text-slate-500 dark:text-slate-400">{fmtDateTime(a.created_at)}</span>
+                  <span className="text-sm text-slate-500">{fmtDateTime(a.created_at)}</span>
                 </div>
               ))}
             </CardBody>

@@ -16,7 +16,7 @@ const STATUSES = ['not_started', 'in_progress', 'implemented', 'needs_review', '
 type Tab = 'description' | 'guidance' | 'evidence' | 'tasks';
 
 export function ControlDetailPage() {
-  const { frameworkId, controlId: assessmentId } = useParams();
+  const { frameworkId, controlId } = useParams();
   const { orgId, userId, role } = useCurrentOrg().data ?? { orgId: '', userId: '', role: 'staff' };
   const [tab, setTab] = useState<Tab>('description');
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -31,11 +31,13 @@ export function ControlDetailPage() {
   const evidenceQ = useQuery({ queryKey: ['evidence', orgId], queryFn: () => fetchEvidence(orgId), enabled: !!orgId });
   const tasksQ = useQuery({ queryKey: ['tasks', orgId], queryFn: () => fetchTasks(orgId), enabled: !!orgId });
 
-  const control = controlsQ.data?.controls.find((c) => c.assessmentId === assessmentId);
+  const control = controlsQ.data?.controls.find((c) => c.controlId === controlId);
+  const assessmentId = control?.assessmentId ?? null;
 
   const statusMut = useMutation({
     mutationFn: async (status: string) => {
-      await setAssessmentStatus(assessmentId!, status);
+      if (!assessmentId) throw new Error('This framework is not activated yet.');
+      await setAssessmentStatus(assessmentId, status);
       await logActivity(orgId, 'status_changed', 'control', assessmentId, { status });
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['controls', orgId, frameworkId] }),
@@ -43,7 +45,8 @@ export function ControlDetailPage() {
 
   const ownerMut = useMutation({
     mutationFn: async () => {
-      await setAssessmentOwner(assessmentId!, userId);
+      if (!assessmentId) throw new Error('This framework is not activated yet.');
+      await setAssessmentOwner(assessmentId, userId);
       await logActivity(orgId, 'owner_assigned', 'control', assessmentId);
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['controls', orgId, frameworkId] }),
@@ -72,22 +75,30 @@ export function ControlDetailPage() {
             <Button variant="secondary" size="sm" onClick={() => navigate('/ai', { state: { context: `${controlsQ.data?.framework?.name} ${control.controlCode}: ${control.title}` } })}>
               <Sparkles size={14} stroke="currentColor" /> Ask AI
             </Button>
-            {!control.notes && <Button variant="secondary" size="sm" onClick={() => ownerMut.mutate()} loading={ownerMut.isPending}><UserPlus size={14} stroke="currentColor" /> Assign to me</Button>}
+            {!control.notes && <Button variant="secondary" size="sm" onClick={() => ownerMut.mutate()} loading={ownerMut.isPending} disabled={!assessmentId} title={assessmentId ? undefined : 'Activate the framework first'}><UserPlus size={14} stroke="currentColor" /> Assign to me</Button>}
           </div>
         </div>
       </div>
 
       {/* Status switcher */}
       <Card className="p-4">
-        <div className="mb-2 text-[11px] font-bold uppercase tracking-wide text-slate-600">Status</div>
+        <div className="mb-2 flex items-center justify-between gap-2">
+          <div className="text-[11px] font-bold uppercase tracking-wide text-slate-600">Status</div>
+          {!assessmentId && (
+            <Link to="/frameworks" className="text-[11px] font-semibold text-blue hover:underline">
+              Activate this framework to enable assessments
+            </Link>
+          )}
+        </div>
         <div className="flex flex-wrap gap-1.5">
           {STATUSES.map((s) => (
             <button
               key={s}
               onClick={() => statusMut.mutate(s)}
-              disabled={statusMut.isPending}
-              className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-colors focus-ring ${
-                control.status === s ? 'border-transparent bg-navy text-white dark:bg-blue-dark dark:hover:bg-blue' : 'border-line bg-white dark:bg-black text-slate-600 dark:text-slate-300 hover:border-gray-300'
+              disabled={statusMut.isPending || !assessmentId}
+              title={assessmentId ? undefined : 'Activate the framework first'}
+              className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-colors focus-ring disabled:cursor-not-allowed disabled:opacity-50 ${
+                control.status === s ? 'border-transparent bg-navy text-white' : 'border-line bg-white text-slate-600 hover:border-gray-300'
               }`}
             >
               {controlLabel(s)}
@@ -110,7 +121,7 @@ export function ControlDetailPage() {
 
       {tab === 'description' && (
         <Card className="p-5">
-          <div className="mb-2 flex items-center gap-2 text-xs font-bold text-navy dark:text-white"><BookOpen size={14} stroke="currentColor" /> Description</div>
+          <div className="mb-2 flex items-center gap-2 text-xs font-bold text-navy"><BookOpen size={14} stroke="currentColor" /> Description</div>
           <p className="whitespace-pre-wrap text-sm leading-relaxed text-slate-600">{control.description || 'No description provided.'}</p>
         </Card>
       )}
@@ -125,7 +136,7 @@ export function ControlDetailPage() {
       {tab === 'evidence' && (
         <div className="space-y-3">
           <div className="flex justify-end">
-            <Button size="sm" onClick={() => navigate(`/evidence/upload?assessmentId=${assessmentId}`)}><Upload size={14} stroke="currentColor" /> Upload Evidence</Button>
+            <Button size="sm" onClick={() => navigate(`/evidence/upload?assessmentId=${assessmentId ?? ""}`)}><Upload size={14} stroke="currentColor" /> Upload Evidence</Button>
           </div>
           {linkedEvidence.length === 0 && <EmptyState icon={<FolderOpen size={22} />} title="No linked evidence" message="Upload evidence to demonstrate implementation of this control." />}
           {linkedEvidence.map((e: any) => {
@@ -158,7 +169,7 @@ export function ControlDetailPage() {
       {tab === 'tasks' && (
         <div className="space-y-3">
           <div className="flex justify-end">
-            <Button size="sm" onClick={() => navigate(`/tasks/new?assessmentId=${assessmentId}`)}><CheckSquare size={14} stroke="currentColor" /> Create Task</Button>
+            <Button size="sm" onClick={() => navigate(`/tasks/new?assessmentId=${assessmentId ?? ""}`)}><CheckSquare size={14} stroke="currentColor" /> Create Task</Button>
           </div>
           {linkedTasks.length === 0 && <EmptyState icon={<CheckSquare size={22} />} title="No linked tasks" message="Create a remediation task for this control." />}
           {linkedTasks.map((t: any) => (

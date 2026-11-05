@@ -1,13 +1,13 @@
 import { useState, type InputHTMLAttributes, type SelectHTMLAttributes, type TextareaHTMLAttributes } from 'react';
 
-const FIELD = 'w-full rounded-lg border border-line bg-white dark:bg-black px-3 py-2.5 text-sm text-ink dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus-ring focus:border-blue';
+const FIELD = 'w-full rounded-lg border border-line bg-white px-3 py-2.5 text-sm text-ink placeholder:text-slate-400 focus-ring focus:border-blue';
 
 export function Field({ label, error, hint, children }: { label: string; error?: string | null; hint?: string; children: any }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-semibold text-slate-600 dark:text-slate-300">{label}</span>
+      <span className="mb-1 block text-xs font-semibold text-slate-600">{label}</span>
       {children}
-      {hint && !error && <span className="mt-1 block text-[11px] text-slate-500 dark:text-slate-400">{hint}</span>}
+      {hint && !error && <span className="mt-1 block text-[11px] text-slate-500">{hint}</span>}
       {error && <span className="mt-1 block text-[11px] font-medium text-crimson">{error}</span>}
     </label>
   );

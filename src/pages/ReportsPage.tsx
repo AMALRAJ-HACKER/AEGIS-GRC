@@ -66,7 +66,7 @@ export function ReportsPage() {
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-navy dark:text-navy">Reports & Audit</h1>
+        <h1 className="text-2xl font-bold text-navy">Reports & Audit</h1>
         <div className="flex gap-2">
           <Button size="sm" onClick={() => navigate('/audit-log')}>Audit Log</Button>
           <Button size="sm" onClick={exportCsv}>
@@ -79,13 +79,18 @@ export function ReportsPage() {
         <CardHeader title="Report Type" />
         <CardBody className="flex flex-wrap gap-2">
           {TYPES.map((t) => (
-            <Button
+            <button
               key={t}
+              type="button"
               onClick={() => setType(t)}
-              className={type === t ? 'rounded-lg border border-navy bg-navy text-white' : 'rounded-lg border border-line bg-white px-3.5 py-1.5 text-xs font-semibold capitalize focus-ring hover:border-navy hover:text-navy dark:hover:text-navy dark:bg-navy/20'}
+              className={`rounded-lg border px-3.5 py-1.5 text-xs font-semibold capitalize transition-colors focus-ring ${
+                type === t
+                  ? 'border-navy bg-navy text-white'
+                  : 'border-line bg-white text-slate-600 hover:border-navy hover:text-navy'
+              }`}
             >
               {t}
-            </Button>
+            </button>
           ))}
         </CardBody>
       </Card>
@@ -94,11 +99,16 @@ export function ReportsPage() {
         <Card>
           <CardHeader title="Compliance Health" subtitle="Per-framework score" />
           <CardBody className="space-y-3">
+            {(stats.data ?? []).length === 0 && (
+              <p className="rounded-xl border border-dashed border-line bg-slate-50/60 px-4 py-8 text-center text-xs text-slate-400">
+                No activated frameworks yet. Activate a framework to see its compliance score here.
+              </p>
+            )}
             {(stats.data ?? []).map((f: any) => (
-              <div key={f.id} className="flex items-center justify-between rounded-xl border border-line border-slate-200 dark:border-navy/20 p-3">
+              <div key={f.id} className="flex items-center justify-between rounded-xl border border-line p-3">
                 <div>
-                  <div className="text-sm font-bold text-navy dark:text-navy">{f.name}</div>
-                  <div className="text-sm text-slate-400 dark:text-slate-300">{f.implemented}/{f.total} implemented · {f.score}%</div>
+                  <div className="text-sm font-bold text-navy">{f.name}</div>
+                  <div className="text-sm text-slate-400">{f.implemented}/{f.total} implemented · {f.score}%</div>
                 </div>
                 <ComplianceRing score={f.score} size={40} />
               </div>
@@ -117,7 +127,7 @@ export function ReportsPage() {
                 { label: 'In Progress', value: controlCounts.inProgress, color: 'amber' },
                 { label: 'Under Review', value: controlCounts.needsReview, color: 'blue' },
                 { label: 'Non-Compliant', value: controlCounts.nonCompliant, color: 'crimson' },
-                { label: 'Not Started', value: controlCounts.notStarted, color: 'slate-500' },
+                { label: 'Not Started', value: controlCounts.notStarted, color: 'slate' },
               ]}
             />
           </CardBody>
@@ -128,17 +138,17 @@ export function ReportsPage() {
         <Card>
           <CardHeader title="Evidence Coverage" />
           <CardBody className="grid grid-cols-2 gap-3 text-center sm:grid-cols-3">
-            <div className="rounded-xl border border-line border-slate-200 dark:border-navy/20 p-3">
+            <div className="rounded-xl border border-line border-slate-200 p-3">
               <div className="text-2xl font-bold text-emerald-500">{evidenceCoverage.withEvidence}</div>
-              <div className="text-xs text-slate-400 dark:text-slate-300">Controls with evidence</div>
+              <div className="text-xs text-slate-400">Controls with evidence</div>
             </div>
-            <div className="rounded-xl border border-line border-slate-200 dark:border-navy/20 p-3">
+            <div className="rounded-xl border border-line border-slate-200 p-3">
               <div className="text-2xl font-bold text-crimson">{evidenceCoverage.withoutEvidence}</div>
-              <div className="text-xs text-slate-400 dark:text-slate-300">Controls without evidence</div>
+              <div className="text-xs text-slate-400">Controls without evidence</div>
             </div>
-            <div className="rounded-xl border border-line border-slate-200 dark:border-navy/20 p-3">
+            <div className="rounded-xl border border-line border-slate-200 p-3">
               <div className="text-2xl font-bold text-navy">{evidenceCoverage.total}</div>
-              <div className="text-xs text-slate-400 dark:text-slate-300">Total controls</div>
+              <div className="text-xs text-slate-400">Total controls</div>
             </div>
           </CardBody>
         </Card>
@@ -151,7 +161,7 @@ export function ReportsPage() {
             {([['critical', 'crimson'], ['high', 'amber'], ['medium', 'blue'], ['low', 'emerald']] as const).map(([k, c]) => (
               <div key={k} className={`rounded-xl p-3 text-center ${c === 'crimson' ? 'bg-crimson/5' : c === 'amber' ? 'bg-amber/5' : c === 'blue' ? 'bg-blue/5' : 'bg-emerald/5'}`}>
                 <div className="text-2xl font-bold">{openRisks.filter((x: any) => x.severity === k).length}</div>
-                <div className="text-xs font-semibold uppercase text-slate-400 dark:text-slate-300">{k}</div>
+                <div className="text-xs font-semibold uppercase text-slate-400">{k}</div>
               </div>
             ))}
           </CardBody>
@@ -163,9 +173,9 @@ export function ReportsPage() {
           <CardHeader title="Task & Remediation Progress" />
           <CardBody className="grid grid-cols-3 gap-2 sm:grid-cols-6">
             {[['todo', 'Open'], ['in_progress', 'In Progress'], ['pending_review', 'Pending Review'], ['approved', 'Approved'], ['done', 'Closed'], ['blocked', 'Blocked']].map(([s, l]) => (
-              <div key={s} className="rounded-xl border border-line border-slate-200 dark:border-navy/20 p-2 text-center">
-                <div className="text-lg font-bold navy">{tasks.data?.filter((x: any) => x.status === s).length}</div>
-                <div className="text-xs text-slate-400 dark:text-slate-300">{l}</div>
+              <div key={s} className="rounded-xl border border-line border-slate-200 p-2 text-center">
+                <div className="text-lg font-bold text-navy">{tasks.data?.filter((x: any) => x.status === s).length}</div>
+                <div className="text-xs text-slate-400">{l}</div>
               </div>
             ))}
           </CardBody>
@@ -179,9 +189,18 @@ export function ReportsPage() {
             <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M18.36 18.36l1.41 1.41M1 12h2M21 12h-2M4.93 19.07l1.41-1.41M18.36 5.64l1.41-1.41" />
           </svg>
           {(['off', 'weekly', 'monthly'] as const).map((f) => (
-            <Button key={f} onClick={() => setFreq(f)} className={
-              freq === f ? 'rounded-lg border border-navy bg-navy text-white' : 'rounded-lg border border-line bg-white px-3.5 py-1.5 text-xs font-semibold capitalize focus-ring hover:border-navy hover:text-navy dark:hover:text-navy dark:bg-navy/20'
-            }>{f === 'off' ? 'Off' : f}</Button>
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFreq(f)}
+              className={`rounded-lg border px-3.5 py-1.5 text-xs font-semibold capitalize transition-colors focus-ring ${
+                freq === f
+                  ? 'border-navy bg-navy text-white'
+                  : 'border-line bg-white text-slate-600 hover:border-navy hover:text-navy'
+              }`}
+            >
+              {f === 'off' ? 'Off' : f}
+            </button>
           ))}
           <p className="text-xs text-slate-400">This web app reads the same org record; schedule settings persist in Supabase if you save from Settings → General/Notifications in the mobile app or extend this page.</p>
         </CardBody>

@@ -24,11 +24,11 @@ function Scale({ label, value, onChange, hints }: { label: string; value: number
             type="button"
             onClick={() => onChange(n)}
             className={`flex-1 rounded-lg border px-1 py-2.5 text-center transition-colors focus-ring ${
-              value === n ? 'border-navy bg-navy text-white dark:bg-blue-dark dark:hover:bg-blue' : 'border-line bg-white dark:bg-black text-slate-600 dark:text-slate-500 hover:border-gray-300'
+              value === n ? 'border-navy bg-navy text-white' : 'border-line bg-white text-slate-600 hover:border-gray-300'
             }`}
           >
             <div className="text-sm font-bold">{n}</div>
-            <div className={`text-[9px] leading-tight ${value === n ? 'text-white/70 dark:text-blue-200' : 'text-slate-500 dark:text-slate-400'}`}>{hints[n - 1]}</div>
+            <div className={`text-[9px] leading-tight ${value === n ? 'text-white' : 'text-slate-500'}`}>{hints[n - 1]}</div>
           </button>
         ))}
       </div>
@@ -111,7 +111,7 @@ export function RiskFormPage() {
           <Field label="Category">
             <div className="flex flex-wrap gap-1.5">
               {CATEGORIES.map((c) => (
-                <button key={c} type="button" onClick={() => set('category', c)} className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold focus-ring ${form.category === c ? 'border-navy bg-navy text-white dark:bg-blue-dark dark:hover:bg-blue' : 'border-line bg-white dark:bg-black text-slate-600 dark:text-slate-500'}`}>{c}</button>
+                <button key={c} type="button" onClick={() => set('category', c)} className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold focus-ring ${form.category === c ? 'border-navy bg-navy text-white' : 'border-line bg-white text-slate-600'}`}>{c}</button>
               ))}
             </div>
           </Field>

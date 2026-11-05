@@ -34,10 +34,10 @@ export function EvidenceDetailPage() {
         <CardBody className="space-y-3">
           <div className="flex items-center gap-2">
             <Badge label={healthLabel(h)} tone={healthTone(h)} />
-            {e.expiry_date && <span className="text-xs text-slate-600 dark:text-slate-400">Expires {fmtDate(e.expiry_date)}</span>}
+            {e.expiry_date && <span className="text-xs text-slate-600">Expires {fmtDate(e.expiry_date)}</span>}
           </div>
-          {e.description && <p className="text-sm text-slate-600 dark:text-slate-500">{e.description}</p>}
-          <div className="text-xs text-slate-500 dark:text-slate-400">Uploaded {fmtDate(e.created_at)} by {e.uploader?.full_name ?? '—'}</div>
+          {e.description && <p className="text-sm text-slate-600">{e.description}</p>}
+          <div className="text-xs text-slate-500">Uploaded {fmtDate(e.created_at)} by {e.uploader?.full_name ?? '—'}</div>
           <div className="flex gap-2">
             <Button onClick={open}><ExternalLink size={14} stroke="currentColor" /> Open / Preview</Button>
           </div>

@@ -90,7 +90,7 @@ export function EvidenceUploadPage() {
                 setFile(f);
                 if (f && !title) setTitle(f.name);
               }}
-              className="w-full rounded-lg border border-line bg-white dark:bg-black px-3 py-2.5 text-sm text-ink dark:text-white file:mr-4 file:rounded-lg file:border-0 file:bg-navy dark:file:bg-blue-dark file:px-4 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-navy-dark dark:hover:file:bg-blue"
+              className="w-full rounded-lg border border-line bg-white px-3 py-2.5 text-sm text-ink file:mr-4 file:rounded-lg file:border-0 file:bg-navy file:px-4 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-navy-dark"
             />
             {file && <p className="mt-1 text-[10px] text-slate-600">{file.name} • {(file.size / 1024 / 1024).toFixed(2)} MB • {file.type || 'unknown'}</p>}
           </div>

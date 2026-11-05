@@ -23,6 +23,8 @@ import { TaskDetailPage } from '@/pages/tasks/TaskDetailPage';
 import { EvidencePage } from '@/pages/evidence/EvidencePage';
 import { EvidenceUploadPage } from '@/pages/evidence/EvidenceUploadPage';
 import { EvidenceDetailPage } from '@/pages/evidence/EvidenceDetailPage';
+import { AssetsPage } from '@/pages/assets/AssetsPage';
+import { VendorsPage } from '@/pages/vendors/VendorsPage';
 import { AIAssistantPage } from '@/pages/AIAssistantPage';
 import { ReportsPage } from '@/pages/ReportsPage';
 import { AuditLogPage } from '@/pages/AuditLogPage';
@@ -30,16 +32,17 @@ import { NotificationsPage } from '@/pages/NotificationsPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
+import HomePage from '@/pages/HomePage';
 
 function Splash() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-navy text-white">
-      <div className="mb-4 flex h-20 w-20 animate-pulse items-center justify-center rounded-2xl bg-white/10">
-        <ShieldCheck size={44} />
+    <div className="flex min-h-screen flex-col items-center justify-center bg-canvas text-navy">
+      <div className="mb-4 flex h-20 w-20 animate-pulse items-center justify-center rounded-2xl bg-navy/10 border border-navy/20">
+        <ShieldCheck size={44} stroke="currentColor" />
       </div>
       <h1 className="text-2xl font-bold tracking-tight">AEGIS GRC</h1>
-      <p className="mt-1 text-sm text-white/60">Governance, Risk & Compliance — Simplified</p>
-      <div className="mt-8 h-6 w-6 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+      <p className="mt-1 text-sm text-slate-600">Governance, Risk & Compliance — Simplified</p>
+      <div className="mt-8 h-6 w-6 animate-spin rounded-full border-2 border-navy/30 border-t-navy" />
     </div>
   );
 }
@@ -67,7 +70,7 @@ function PublicOnly({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/" element={<PublicOnly><HomePage /></PublicOnly>} />
       <Route path="/login" element={<PublicOnly><LoginPage /></PublicOnly>} />
       <Route path="/signup" element={<PublicOnly><SignupPage /></PublicOnly>} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -77,6 +80,7 @@ export default function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/frameworks" element={<FrameworksPage />} />
         <Route path="/frameworks/add" element={<AddFrameworkPage />} />
+        <Route path="/controls" element={<ControlsPage />} />
         <Route path="/frameworks/:frameworkId" element={<ControlsPage />} />
         <Route path="/frameworks/:frameworkId/controls/:controlId" element={<ControlDetailPage />} />
         <Route path="/risks" element={<RisksPage />} />
@@ -89,6 +93,8 @@ export default function App() {
         <Route path="/evidence" element={<EvidencePage />} />
         <Route path="/evidence/upload" element={<EvidenceUploadPage />} />
         <Route path="/evidence/:evidenceId" element={<EvidenceDetailPage />} />
+        <Route path="/assets" element={<AssetsPage />} />
+        <Route path="/vendors" element={<VendorsPage />} />
         <Route path="/ai" element={<AIAssistantPage />} />
         <Route path="/reports" element={<ReportsPage />} />
         <Route path="/audit-log" element={<AuditLogPage />} />
