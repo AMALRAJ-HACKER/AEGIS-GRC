@@ -1,6 +1,6 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShieldCheck, MailCheck, CheckCircle2, Lock, ArrowLeft, Check, X } from 'lucide-react';
+import { ShieldCheck, MailCheck, CheckCircle2, Lock, ArrowLeft, Check, X, KeyRound, AlertTriangle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/Button';
 import { Input, PasswordInput } from '@/components/ui/Input';
@@ -8,20 +8,34 @@ import { Input, PasswordInput } from '@/components/ui/Input';
 export function ResetPasswordPage() {
   const navigate = useNavigate();
 
-  // Mode: 'request' | 'set_new' | 'success'
-  const [mode, setMode] = useState<'request' | 'set_new' | 'success'>('request');
+  // Mode: 'request' | 'verify_code' | 'set_new' | 'success'
+  const [mode, setMode] = useState<'request' | 'verify_code' | 'set_new' | 'success'>('request');
   const [email, setEmail] = useState('');
+  const [tokenCode, setTokenCode] = useState('');
   const [sent, setSent] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Check if user reached this page via recovery email link
+  // Check if user reached this page via recovery email link or expired token
   useEffect(() => {
-    // 1. Check URL hash for type=recovery or access_token
     const hash = window.location.hash;
     const search = window.location.search;
+
+    // Check for error in hash (e.g. otp_expired)
+    if (hash.includes('error=')) {
+      const params = new URLSearchParams(hash.substring(1));
+      const desc = params.get('error_description') || 'This password reset link is invalid or has expired.';
+      setError(decodeURIComponent(desc.replace(/\+/g, ' ')));
+      setMode('request');
+      if (window.history.replaceState) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+      return;
+    }
+
+    // Check for recovery token in hash or query
     const hasRecoveryHash = hash.includes('type=recovery') || hash.includes('access_token');
     const hasRecoveryCode = new URLSearchParams(search).has('code');
 
@@ -29,7 +43,7 @@ export function ResetPasswordPage() {
       setMode('set_new');
     }
 
-    // 2. Listen for Supabase PASSWORD_RECOVERY auth event
+    // Listen for Supabase PASSWORD_RECOVERY auth event
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event) => {
       if (event === 'PASSWORD_RECOVERY') {
         setMode('set_new');
@@ -57,8 +71,9 @@ export function ResetPasswordPage() {
     setLoading(true);
 
     try {
+      const redirectOrigin = window.location.origin;
       const { error: resetErr } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: `${redirectOrigin}/reset-password`,
       });
 
       if (resetErr) {
@@ -68,6 +83,37 @@ export function ResetPasswordPage() {
       }
     } catch (err: any) {
       setError(err?.message || 'Failed to send password reset email.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handler for Direct OTP / Code Verification
+  const handleVerifyCode = async (e: FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!email.trim() || !tokenCode.trim()) {
+      setError('Please provide both your registered email and the reset token/code.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error: otpErr } = await supabase.auth.verifyOtp({
+        email: email.trim(),
+        token: tokenCode.trim(),
+        type: 'recovery',
+      });
+
+      if (otpErr) {
+        setError(otpErr.message);
+      } else {
+        setMode('set_new');
+        setError(null);
+      }
+    } catch (err: any) {
+      setError(err?.message || 'Failed to verify reset token.');
     } finally {
       setLoading(false);
     }
@@ -92,7 +138,6 @@ export function ResetPasswordPage() {
       if (updateErr) {
         setError(updateErr.message);
       } else {
-        // Clean URL fragment
         if (window.history.replaceState) {
           window.history.replaceState(null, '', window.location.pathname);
         }
@@ -144,7 +189,7 @@ export function ResetPasswordPage() {
         )}
 
         {/* ------------------------------------------------------------- */}
-        {/* View 2: Set New Password Form (When opening email recovery link) */}
+        {/* View 2: Set New Password Form (When opening recovery link) */}
         {/* ------------------------------------------------------------- */}
         {mode === 'set_new' && (
           <form onSubmit={handleUpdatePassword} className="card space-y-4 p-6">
@@ -225,7 +270,68 @@ export function ResetPasswordPage() {
         )}
 
         {/* ------------------------------------------------------------- */}
-        {/* View 3: Request Reset Link Form (Default State) */}
+        {/* View 3: Direct Code / Token Verification Form */}
+        {/* ------------------------------------------------------------- */}
+        {mode === 'verify_code' && (
+          <form onSubmit={handleVerifyCode} className="card space-y-4 p-6">
+            <div className="flex items-center gap-2 pb-1 border-b border-line">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-navy/5 text-navy">
+                <KeyRound size={16} stroke="currentColor" />
+              </div>
+              <div>
+                <h2 className="text-base font-bold text-navy">Enter Reset Code</h2>
+                <p className="text-[11px] text-slate-500">Paste the token from your email</p>
+              </div>
+            </div>
+
+            {error && (
+              <p className="rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-xs font-medium text-crimson">
+                {error}
+              </p>
+            )}
+
+            <Input
+              label="Work Email"
+              type="email"
+              required
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@company.com"
+            />
+
+            <Input
+              label="Reset Code or Token"
+              required
+              value={tokenCode}
+              onChange={(e) => setTokenCode(e.target.value)}
+              placeholder="e.g. 6-digit code or token"
+            />
+
+            <Button type="submit" loading={loading} className="w-full">
+              Verify Code & Set Password
+            </Button>
+
+            <div className="flex items-center justify-between text-xs pt-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setMode('request');
+                  setError(null);
+                }}
+                className="font-semibold text-blue hover:underline"
+              >
+                ← Request new link
+              </button>
+              <Link to="/login" className="font-semibold text-slate-600 hover:text-navy">
+                Back to sign in
+              </Link>
+            </div>
+          </form>
+        )}
+
+        {/* ------------------------------------------------------------- */}
+        {/* View 4: Request Reset Link Form (Default State) */}
         {/* ------------------------------------------------------------- */}
         {mode === 'request' && (
           sent ? (
@@ -251,9 +357,19 @@ export function ResetPasswordPage() {
                 >
                   Send another link
                 </Button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('verify_code');
+                    setError(null);
+                  }}
+                  className="block w-full text-xs font-semibold text-blue hover:underline text-center pt-1"
+                >
+                  Have a reset code / token? Enter it here
+                </button>
                 <Link
                   to="/login"
-                  className="block text-xs font-semibold text-blue hover:underline text-center pt-1"
+                  className="block text-xs font-semibold text-slate-500 hover:text-navy text-center pt-1"
                 >
                   ← Back to sign in
                 </Link>
@@ -269,9 +385,10 @@ export function ResetPasswordPage() {
               </div>
 
               {error && (
-                <p className="rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-xs font-medium text-crimson">
-                  {error}
-                </p>
+                <div className="flex items-start gap-2 rounded-lg bg-amber-50 border border-amber-200 p-2.5 text-xs text-amber-900">
+                  <AlertTriangle size={15} className="mt-0.5 text-amber-600 shrink-0" />
+                  <span>{error}</span>
+                </div>
               )}
 
               <Input
@@ -288,11 +405,21 @@ export function ResetPasswordPage() {
                 Send Reset Link
               </Button>
 
-              <p className="text-center text-xs">
-                <Link to="/login" className="inline-flex items-center gap-1 font-semibold text-blue hover:underline">
-                  <ArrowLeft size={12} /> Back to sign in
+              <div className="flex items-center justify-between text-xs pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('verify_code');
+                    setError(null);
+                  }}
+                  className="font-semibold text-blue hover:underline"
+                >
+                  Enter code manually
+                </button>
+                <Link to="/login" className="inline-flex items-center gap-1 font-semibold text-slate-600 hover:text-navy">
+                  <ArrowLeft size={12} /> Sign in
                 </Link>
-              </p>
+              </div>
             </form>
           )
         )}
