@@ -1,16 +1,17 @@
 import { useState, type FormEvent } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Camera, LogOut, ShieldCheck, User, Mail, Phone } from 'lucide-react';
+import { Camera, LogOut, ShieldCheck, User, Mail, Phone, Lock, KeyRound, Check, X } from 'lucide-react';
 import { useCurrentOrg } from '@/hooks/useOrg';
 import { useAuth } from '@/hooks/useAuth';
 import { updateProfile, uploadAvatar } from '@/services/api';
 import { logActivity } from '@/lib/format';
 import { Card, CardHeader, CardBody } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import { Input, PasswordInput } from '@/components/ui/Input';
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
 import { roleLabel } from '@/lib/format';
+import { supabase } from '@/lib/supabase';
 
 export function ProfilePage() {
   const { signOut } = useAuth();
@@ -24,6 +25,53 @@ export function ProfilePage() {
   });
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+
+  // In-app password change states
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [pwdError, setPwdError] = useState<string | null>(null);
+  const [pwdSuccess, setPwdSuccess] = useState<string | null>(null);
+  const [pwdSaving, setPwdSaving] = useState(false);
+
+  const pwdMinLength = newPassword.length >= 8;
+  const pwdUpper = /[A-Z]/.test(newPassword);
+  const pwdLower = /[a-z]/.test(newPassword);
+  const pwdNumber = /[0-9]/.test(newPassword);
+  const pwdMatch = newPassword.length > 0 && newPassword === confirmPassword;
+  const isPwdValid = pwdMinLength && pwdUpper && pwdLower && pwdNumber && pwdMatch;
+
+  const changePassword = async (e: FormEvent) => {
+    e.preventDefault();
+    setPwdError(null);
+    setPwdSuccess(null);
+
+    if (!isPwdValid) {
+      setPwdError('Please satisfy all password complexity requirements.');
+      return;
+    }
+
+    setPwdSaving(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) {
+        setPwdError(error.message);
+      } else {
+        setPwdSuccess('Your password has been updated successfully.');
+        setNewPassword('');
+        setConfirmPassword('');
+        await logActivity(orgId, 'password_updated', 'profile', userId);
+        setTimeout(() => {
+          setShowPasswordChange(false);
+          setPwdSuccess(null);
+        }, 3000);
+      }
+    } catch (err: any) {
+      setPwdError(err?.message || 'Failed to update password.');
+    } finally {
+      setPwdSaving(false);
+    }
+  };
 
   const save = async (e: FormEvent) => {
     e.preventDefault();
@@ -188,16 +236,140 @@ export function ProfilePage() {
           </Card>
 
           <Card>
-            <CardHeader title="Security & Session" subtitle="Manage your active session and sign out" />
+            <CardHeader title="Security & Authentication" subtitle="Manage your account password, active session, and credentials" />
             <CardBody className="space-y-4">
-              <Button
-                variant="danger"
-                onClick={() => signOut()}
-                className="flex w-full items-center gap-2"
-              >
-                <LogOut size={16} stroke="currentColor" />
-                Sign Out
-              </Button>
+              {/* Password Change Toggle */}
+              {!showPasswordChange ? (
+                <div className="flex items-center justify-between p-3.5 rounded-xl border border-line bg-canvas/40">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-navy/5 text-navy">
+                      <KeyRound size={18} stroke="currentColor" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-navy">Password</p>
+                      <p className="text-[11px] text-slate-500">Update your account login password</p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => {
+                      setShowPasswordChange(true);
+                      setPwdError(null);
+                      setPwdSuccess(null);
+                    }}
+                  >
+                    Change Password
+                  </Button>
+                </div>
+              ) : (
+                <form onSubmit={changePassword} className="space-y-4 p-4 rounded-xl border border-navy/20 bg-canvas/40">
+                  <div className="flex items-center justify-between pb-2 border-b border-line">
+                    <div className="flex items-center gap-2">
+                      <Lock size={16} className="text-navy" />
+                      <span className="text-xs font-bold text-navy">Change Account Password</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowPasswordChange(false);
+                        setPwdError(null);
+                        setPwdSuccess(null);
+                      }}
+                      className="text-xs font-semibold text-slate-500 hover:text-navy"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+
+                  {pwdError && (
+                    <p className="rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-xs font-medium text-crimson">
+                      {pwdError}
+                    </p>
+                  )}
+
+                  {pwdSuccess && (
+                    <div className="flex items-center gap-2 rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2 text-xs font-medium text-emerald-800">
+                      <Check size={14} className="text-emerald-700 font-bold" />
+                      <span>{pwdSuccess}</span>
+                    </div>
+                  )}
+
+                  <PasswordInput
+                    label="New Password"
+                    required
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="••••••••"
+                    autoComplete="new-password"
+                  />
+
+                  <PasswordInput
+                    label="Confirm New Password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    autoComplete="new-password"
+                  />
+
+                  {/* Password Checklist */}
+                  <div className="rounded-xl border border-line bg-white p-3 space-y-1.5 text-[11px]">
+                    <span className="block font-semibold text-slate-700 mb-1">Password Requirements:</span>
+                    <div className="flex items-center gap-2">
+                      {pwdMinLength ? <Check size={13} className="text-emerald-700 font-bold" /> : <X size={13} className="text-slate-400" />}
+                      <span className={pwdMinLength ? 'text-emerald-800 font-medium' : 'text-slate-500'}>Minimum 8 characters</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {pwdUpper ? <Check size={13} className="text-emerald-700 font-bold" /> : <X size={13} className="text-slate-400" />}
+                      <span className={pwdUpper ? 'text-emerald-800 font-medium' : 'text-slate-500'}>At least one uppercase letter (A-Z)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {pwdLower ? <Check size={13} className="text-emerald-700 font-bold" /> : <X size={13} className="text-slate-400" />}
+                      <span className={pwdLower ? 'text-emerald-800 font-medium' : 'text-slate-500'}>At least one lowercase letter (a-z)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {pwdNumber ? <Check size={13} className="text-emerald-700 font-bold" /> : <X size={13} className="text-slate-400" />}
+                      <span className={pwdNumber ? 'text-emerald-800 font-medium' : 'text-slate-500'}>At least one number (0-9)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {pwdMatch ? <Check size={13} className="text-emerald-700 font-bold" /> : <X size={13} className="text-slate-400" />}
+                      <span className={pwdMatch ? 'text-emerald-800 font-medium' : 'text-slate-500'}>Passwords match</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-1">
+                    <Button
+                      type="submit"
+                      size="sm"
+                      loading={pwdSaving}
+                      disabled={!isPwdValid || pwdSaving}
+                      className="flex-1"
+                    >
+                      Save New Password
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => setShowPasswordChange(false)}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
+              )}
+
+              <div className="pt-2">
+                <Button
+                  variant="danger"
+                  onClick={() => signOut()}
+                  className="flex w-full items-center gap-2"
+                >
+                  <LogOut size={16} stroke="currentColor" />
+                  Sign Out
+                </Button>
+              </div>
             </CardBody>
           </Card>
         </div>
