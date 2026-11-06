@@ -1,0 +1,15 @@
+{
+  "name": "aegis-grc-mobile-automation",
+  "version": "1.0.0",
+  "description": "AEGIS GRC Enterprise Mobile Appium Automation Framework with 400+ Test Cases, Excel Analysis & HTML Reporting",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js",
+    "test:mock": "EXEC_MODE=mock node index.js",
+    "test:emulator": "EXEC_MODE=emulator node index.js",
+    "report": "node src/reports/generate-all-reports.js"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0"
+  }
+}

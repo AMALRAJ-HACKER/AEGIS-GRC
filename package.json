@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run || exit 0",
     "test:selenium": "node selenium-tests/runner.js",
-    "test:selenium:headed": "HEADLESS=false node selenium-tests/runner.js"
+    "test:selenium:headed": "HEADLESS=false node selenium-tests/runner.js",
+    "test:mobile": "node mobile-automation/index.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",
