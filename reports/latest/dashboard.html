@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEGIS GRC — Executive Quality Dashboard</title>
+  <style>
+    :root { --navy: #0F2D52; --green: #10B981; --red: #EF4444; --gold: #D97706; --bg: #F8FAFC; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    body { background: var(--bg); padding: 30px; color: #1E293B; }
+    .card { background: white; border: 1px solid #E2E8F0; border-radius: 14px; padding: 24px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); margin-bottom: 24px; }
+    .chart-row { display: flex; gap: 24px; flex-wrap: wrap; }
+    .chart-box { flex: 1; min-width: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .donut-text { font-size: 32px; font-weight: 800; fill: var(--navy); }
+    .donut-sub { font-size: 12px; fill: #64748B; }
+    h2 { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 16px; }
+    .btn { display: inline-block; padding: 10px 18px; background: var(--navy); color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="card" style="background: linear-gradient(135deg, #0A1C33 0%, #0F2D52 100%); color: white;">
+    <h1>AEGIS GRC — Executive Quality & Compliance Dashboard</h1>
+    <p style="color: #94A3B8; margin-top: 6px;">Android Mobile Automation Release Attestation</p>
+    <div style="margin-top: 18px;">
+      <a href="execution-report.html" class="btn" style="background: #10B981;">View Detailed Execution Report</a>
+      <a href="trends.html" class="btn" style="background: rgba(255,255,255,0.15); margin-left: 10px;">Historical Trends</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Overall Release Readiness</h2>
+    <div class="chart-row">
+      <div class="chart-box">
+        <svg width="180" height="180" viewBox="0 0 36 36">
+          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#E2E8F0" stroke-width="3.5" />
+          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#10B981" stroke-width="3.5" stroke-dasharray="96.60, 100" stroke-linecap="round" />
+          <text x="18" y="19" class="donut-text" text-anchor="middle" dy=".3em">96.60%</text>
+        </svg>
+        <p style="margin-top: 10px; font-weight: 700; color: #10B981;">QUALITY GATE PASSED (Target: &ge; 95%)</p>
+      </div>
+      <div style="flex: 2; min-width: 300px;">
+        <p><strong>Total Scope:</strong> 530 Automated Test Cases</p>
+        <p style="margin-top: 8px;"><strong>Status:</strong> Ready for Enterprise Deployment</p>
+        <p style="margin-top: 8px;"><strong>Device Target:</strong> Google Pixel 7 Pro (Virtual Device) (Android 14)</p>
+        <p style="margin-top: 8px;"><strong>Artifacts:</strong> Full Excel and JSON telemetry exported</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
