@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { severityFromScore, notify } from '@/lib/format';
+import { validateEvidenceFile } from '@/lib/fileValidation';
 
 // ============================================================
 // Frameworks & Controls (PRD 2.3) — identical queries to the mobile app
@@ -133,7 +134,7 @@ export async function createRisk(orgId: string, userId: string, fields: any) {
   return data;
 }
 
-export async function updateRisk(id: string, fields: any) {
+export async function updateRisk(id: string, fields: any, orgId?: string) {
   const patch: any = { ...fields, updated_at: new Date().toISOString() };
   if (fields.likelihood && fields.impact) {
     patch.severity = severityFromScore(fields.likelihood * fields.impact);
@@ -141,7 +142,11 @@ export async function updateRisk(id: string, fields: any) {
   if (fields.residual_likelihood && fields.residual_impact) {
     patch.residual_score = fields.residual_likelihood * fields.residual_impact;
   }
-  const { error } = await supabase.from('risks').update(patch).eq('id', id);
+  let query = supabase.from('risks').update(patch).eq('id', id);
+  if (orgId) {
+    query = query.eq('organization_id', orgId);
+  }
+  const { error } = await query;
   if (error) throw error;
 }
 
@@ -261,7 +266,11 @@ export async function uploadEvidence(
   file: { uri?: string; blob?: Blob; name: string; mimeType?: string; size?: number },
   meta: { title: string; description?: string; expiry?: string; assessmentId?: string | null },
 ) {
-  if (file.size && file.size > 25 * 1024 * 1024) throw new Error('File exceeds the 25 MB limit.');
+  const check = validateEvidenceFile(file);
+  if (!check.valid) {
+    throw new Error(check.error || 'Invalid file artifact.');
+  }
+
   const path = `${orgId}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
   const body: any = file.blob ?? file.uri;
   const contentType = file.mimeType || 'application/octet-stream';
@@ -297,9 +306,13 @@ export async function signedEvidenceUrl(path: string) {
   return data.signedUrl;
 }
 
-export async function deleteEvidence(id: string, path: string) {
+export async function deleteEvidence(id: string, path: string, orgId?: string) {
   await supabase.storage.from('evidence').remove([path]);
-  const { error } = await supabase.from('evidence').delete().eq('id', id);
+  let query = supabase.from('evidence').delete().eq('id', id);
+  if (orgId) {
+    query = query.eq('organization_id', orgId);
+  }
+  const { error } = await query;
   if (error) throw error;
 }
 
