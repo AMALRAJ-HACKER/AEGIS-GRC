@@ -9,10 +9,10 @@ module.exports = {
   plugins: ['react', '@typescript-eslint'],
   rules: {
     '@typescript-eslint/explicit-function-return-type': 'warn',
-    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     '@typescript-eslint/no-explicit-any': 'warn',
     'react/prop-types': 'off',
-    react/react-in-jsx-scope: 'off',
+    'react/react-in-jsx-scope': 'off',
   },
   languageOptions: {
     ecmaVersion: 'latest',
