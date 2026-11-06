@@ -1,7 +1,9 @@
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { ShieldCheck } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCurrentOrg } from '@/hooks/useOrg';
+import { supabase } from '@/lib/supabase';
 import { AppShell } from '@/components/layout/AppShell';
 import { Spinner } from '@/components/ui/States';
 import { LoginPage } from '@/pages/auth/LoginPage';
@@ -52,7 +54,10 @@ function Protected({ children }: { children: React.ReactNode }) {
   const { session, loading } = useAuth();
   const { data: orgCtx, isLoading: orgLoading } = useCurrentOrg();
   const location = useLocation();
+  const hash = typeof window !== 'undefined' ? window.location.hash : '';
+  const isRecovery = hash.includes('type=recovery');
 
+  if (isRecovery) return <Navigate to={`/reset-password${hash}`} replace />;
   if (loading || (session && orgLoading)) return <Splash />;
   if (!session) return <Navigate to="/login" replace state={{ from: location }} />;
   if (orgCtx && !orgCtx.orgId && location.pathname !== '/onboarding') return <Navigate to="/onboarding" replace />;
@@ -62,12 +67,34 @@ function Protected({ children }: { children: React.ReactNode }) {
 
 function PublicOnly({ children }: { children: React.ReactNode }) {
   const { session, loading } = useAuth();
+  const hash = typeof window !== 'undefined' ? window.location.hash : '';
+  const isRecovery = hash.includes('type=recovery');
+
   if (loading) return <Splash />;
-  if (session) return <Navigate to="/dashboard" replace />;
+  if (session && !isRecovery) return <Navigate to="/dashboard" replace />;
   return <>{children}</>;
 }
 
 export default function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.includes('type=recovery') && window.location.pathname !== '/reset-password') {
+      navigate(`/reset-password${hash}`, { replace: true });
+    }
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        navigate('/reset-password', { replace: true });
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [navigate]);
+
   return (
     <Routes>
       <Route path="/" element={<PublicOnly><HomePage /></PublicOnly>} />
